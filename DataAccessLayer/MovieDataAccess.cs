@@ -35,15 +35,17 @@ namespace MovieTheater
                     while (reader.Read())
                     {
                         movie = new Movies();
-                        movie.MovieID = (int)reader["MoviesID"];
+                        movie.MovieID = (int)reader["MovieID"];
                         movie.Name = reader["Name"].ToString();
                         movie.Date = (DateTime)reader["Date"];
                         movie.AgeRating = reader["AgeRating"].ToString();
-                        movie.RunTime = (int)reader["RuntTime"];
+                        movie.RunTime = (int)reader["RunTime"];
                         movie.Category = reader["Category"].ToString();
                         movie.Description = reader["Description"].ToString();
                         movie.Language = reader["Language"].ToString();
                         movie.DirectorID = (int)reader["DirectorID"];
+
+                        movieslist.Add(movie);
                     }
 
                 }

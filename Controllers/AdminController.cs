@@ -6,13 +6,14 @@ using System.Web.Mvc;
 
 namespace MovieTheater.Controllers
 {
-    public class Admin : Controller
+    public class AdminController : Controller
     {
         public ActionResult index()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult ListMovies()
         {
             List <Movies> list = new List<Movies>();
