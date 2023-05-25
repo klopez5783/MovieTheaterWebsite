@@ -21,5 +21,24 @@ namespace MovieTheater.Controllers
             list = movies.getAllMovies();
             return View(list);
         }
+
+        [HttpGet]
+        public ActionResult EditMovie( int id )
+        {
+            Movies TempMovie;
+            MovieDataAccess movieData = new MovieDataAccess();
+            TempMovie = movieData.FindMovie(id);
+            return View(TempMovie);
+        }
+
+
+        [HttpPost]
+        public ActionResult EditMovie(Movies TempMovie)
+        {
+            Movies Movie;
+            MovieDataAccess movieData = new MovieDataAccess();
+            movieData.EditMovie(TempMovie);
+            return RedirectToAction("ListMovies");
+        }
     }
 }

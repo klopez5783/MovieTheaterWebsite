@@ -185,6 +185,7 @@
     <Content Include="Views\Admin\ListMovies.cshtml">
       <BrowseToURL>~/Admin/ListMovies</BrowseToURL>
     </Content>
+    <Content Include="Views\Admin\EditMovie.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
