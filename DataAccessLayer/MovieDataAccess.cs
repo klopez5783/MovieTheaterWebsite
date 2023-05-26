@@ -19,7 +19,7 @@ namespace MovieTheater
         public Movies MovieVariablesSet(Movies movie)
         {
             cmd.Parameters.Add("@name", SqlDbType.NVarChar, 50).Value = movie.Name;
-            cmd.Parameters.Add("@date", SqlDbType.DateTime).Value = movie.Date;
+            cmd.Parameters.Add("@date", SqlDbType.DateTime).Value = movie.Date.ToString("yyyy-MM-dd");
             cmd.Parameters.Add("@agerating", SqlDbType.NVarChar,50).Value = movie.AgeRating;
             cmd.Parameters.Add("@runtime", SqlDbType.Int).Value = movie.RunTime;
             cmd.Parameters.Add("@category", SqlDbType.NVarChar,50).Value = movie.Category;
@@ -158,6 +158,85 @@ namespace MovieTheater
 
             return success;
         }// ends EditMovie
+
+
+        public bool DeleteMovie(int id)
+        {
+            int rows = 0;
+            query = "Delete from Movies where MovieID = @id;";
+
+            conn = new SqlConnection(connectionString);
+            cmd = new SqlCommand(query, conn);
+            cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+            try
+            {
+                conn.Open();
+                rows = cmd.ExecuteNonQuery();
+                if (rows > 0)
+                {
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+            finally
+            {
+                conn.Close();
+
+            }
+
+            return success;
+
+        } // ends Delete Movie
+
+        public bool AddMovie(Movies movie)
+        {
+            int rows = 0;
+            query = "Insert Into Movies (Name,Date,AgeRating,Category,Description,Language,DirectorID) " +
+                "Values ('@name','@date','@agerating','@category','@description','@language','@directorid');";
+
+            conn = new SqlConnection(connectionString);
+            cmd = new SqlCommand(query, conn);
+
+            MovieVariablesSet(movie);
+
+
+
+            try
+            {
+                conn.Open();
+                rows = cmd.ExecuteNonQuery();
+                if (rows > 0)
+                {
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+            finally
+            {
+                conn.Close();
+
+            }
+
+            return success;
+
+        } // ends AddMovie
 
     }
 

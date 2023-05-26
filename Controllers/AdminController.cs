@@ -40,5 +40,44 @@ namespace MovieTheater.Controllers
             movieData.EditMovie(TempMovie);
             return RedirectToAction("ListMovies");
         }
+
+        [HttpGet]
+        public ActionResult DeleteMovie ( int id )
+        {
+            Movies TempMovie;
+            MovieDataAccess movieData = new MovieDataAccess();
+            TempMovie = movieData.FindMovie(id);
+            return View(TempMovie);
+
+        }
+
+
+
+        [HttpPost, ActionName("DeleteMovie")]
+        public ActionResult DeleteMovieConfirm(int id)
+        {
+            MovieDataAccess tempmovie = new MovieDataAccess();
+            tempmovie.DeleteMovie(id);
+            return RedirectToAction("ListMovies");
+        }
+
+
+        [HttpGet]
+        public ActionResult AddMovie()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddMovie(Movies TempMovie)
+        {
+            if (ModelState.IsValid)
+            {
+                MovieDataAccess dataAccess = new MovieDataAccess();
+                dataAccess.AddMovie(TempMovie);
+                return RedirectToAction("ListMovies");
+            }
+            return View();  
+        }
     }
 }
