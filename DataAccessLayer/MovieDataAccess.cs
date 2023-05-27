@@ -19,12 +19,12 @@ namespace MovieTheater
         public Movies MovieVariablesSet(Movies movie)
         {
             cmd.Parameters.Add("@name", SqlDbType.NVarChar, 50).Value = movie.Name;
-            cmd.Parameters.Add("@date", SqlDbType.DateTime).Value = movie.Date.ToString("yyyy-MM-dd");
-            cmd.Parameters.Add("@agerating", SqlDbType.NVarChar,50).Value = movie.AgeRating;
+            cmd.Parameters.AddWithValue("@date", movie.Date);
+            cmd.Parameters.Add("@agerating", SqlDbType.NVarChar, 50).Value = movie.AgeRating;
             cmd.Parameters.Add("@runtime", SqlDbType.Int).Value = movie.RunTime;
-            cmd.Parameters.Add("@category", SqlDbType.NVarChar,50).Value = movie.Category;
-            cmd.Parameters.Add("@description", SqlDbType.NVarChar,50).Value = movie.Description;
-            cmd.Parameters.Add("@language", SqlDbType.NVarChar,50).Value = movie.Language;
+            cmd.Parameters.Add("@category", SqlDbType.NVarChar, 50).Value = movie.Category;
+            cmd.Parameters.Add("@description", SqlDbType.NVarChar, 50).Value = movie.Description;
+            cmd.Parameters.Add("@language", SqlDbType.NVarChar, 50).Value = movie.Language;
             cmd.Parameters.Add("@directorid", SqlDbType.Int).Value = movie.DirectorID;
 
             return movie;
@@ -131,7 +131,6 @@ namespace MovieTheater
             cmd.Parameters.Add("@id", SqlDbType.Int).Value = movie.MovieID;
 
             MovieVariablesSet(movie);
-
             try
             {
                 conn.Open();
@@ -200,8 +199,8 @@ namespace MovieTheater
         public bool AddMovie(Movies movie)
         {
             int rows = 0;
-            query = "Insert Into Movies (Name,Date,AgeRating,Category,Description,Language,DirectorID) " +
-                "Values ('@name','@date','@agerating','@category','@description','@language','@directorid');";
+            query = "INSERT INTO Movies (Name, Date, AgeRating, Runtime, Category, Description, Language, DirectorID) " +
+            "VALUES (@name, @date, @agerating, @runtime, @category, @description, @language, @directorid);";
 
             conn = new SqlConnection(connectionString);
             cmd = new SqlCommand(query, conn);
@@ -237,9 +236,9 @@ namespace MovieTheater
             return success;
 
         } // ends AddMovie
-
+        
     }
 
 
-    
+
 }

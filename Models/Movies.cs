@@ -12,8 +12,7 @@ namespace MovieTheater
         public int MovieID { get; set; }
         public string Name { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}")]
-        [DataType(DataType.Date)]
+        
         public DateTime Date { get; set; }
 
         public string AgeRating { get; set; }
