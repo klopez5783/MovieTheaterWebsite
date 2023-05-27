@@ -19,7 +19,8 @@ namespace MovieTheater
         public Movies MovieVariablesSet(Movies movie)
         {
             cmd.Parameters.Add("@name", SqlDbType.NVarChar, 50).Value = movie.Name;
-            cmd.Parameters.AddWithValue("@date", movie.Date);
+            cmd.Parameters.Add("@date",SqlDbType.DateTime).Value = movie.Date;
+            //cmd.Parameters.AddWithValue("@date", movie.Date);
             cmd.Parameters.Add("@agerating", SqlDbType.NVarChar, 50).Value = movie.AgeRating;
             cmd.Parameters.Add("@runtime", SqlDbType.Int).Value = movie.RunTime;
             cmd.Parameters.Add("@category", SqlDbType.NVarChar, 50).Value = movie.Category;
