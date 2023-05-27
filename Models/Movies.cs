@@ -26,5 +26,10 @@ namespace MovieTheater
         public string Language { get; set; }
 
         public int DirectorID { get; set; }
+
+        public byte[] MovieIMG { get; set; }
+
+        public HttpPostedFileBase ImageFile { get; set; }
+
     }
 }

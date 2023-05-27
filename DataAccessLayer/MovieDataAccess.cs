@@ -20,13 +20,13 @@ namespace MovieTheater
         {
             cmd.Parameters.Add("@name", SqlDbType.NVarChar, 50).Value = movie.Name;
             cmd.Parameters.Add("@date",SqlDbType.DateTime).Value = movie.Date;
-            //cmd.Parameters.AddWithValue("@date", movie.Date);
             cmd.Parameters.Add("@agerating", SqlDbType.NVarChar, 50).Value = movie.AgeRating;
             cmd.Parameters.Add("@runtime", SqlDbType.Int).Value = movie.RunTime;
             cmd.Parameters.Add("@category", SqlDbType.NVarChar, 50).Value = movie.Category;
             cmd.Parameters.Add("@description", SqlDbType.NVarChar, 50).Value = movie.Description;
             cmd.Parameters.Add("@language", SqlDbType.NVarChar, 50).Value = movie.Language;
             cmd.Parameters.Add("@directorid", SqlDbType.Int).Value = movie.DirectorID;
+            cmd.Parameters.Add("@movieimg", SqlDbType.Image).Value = movie.MovieIMG;
 
             return movie;
 
@@ -106,6 +106,7 @@ namespace MovieTheater
                     movie.Description = reader["Description"].ToString();
                     movie.Language = reader["Language"].ToString();
                     movie.DirectorID = (int)reader["DirectorID"];
+                    movie.MovieIMG = (byte[])reader["MovieIMG"];
                 }
             }
             catch (SqlException ex)
@@ -125,7 +126,7 @@ namespace MovieTheater
             int rows = 0;
             query = "Update Movies " +
                 "Set Name = @name, Date = @date, AgeRating = @agerating, Runtime = @runtime , Category = @category, Description = @description" +
-                ",Language = @language , DirectorID = @directorid where MovieID = @id;";
+                ",Language = @language , DirectorID = @directorid , MovieIMG = @movieimg where MovieID = @id  ;";
 
             conn = new SqlConnection(connectionString);
             cmd = new SqlCommand(query, conn);
@@ -200,8 +201,8 @@ namespace MovieTheater
         public bool AddMovie(Movies movie)
         {
             int rows = 0;
-            query = "INSERT INTO Movies (Name, Date, AgeRating, Runtime, Category, Description, Language, DirectorID) " +
-            "VALUES (@name, @date, @agerating, @runtime, @category, @description, @language, @directorid);";
+            query = "INSERT INTO Movies (Name, Date, AgeRating, Runtime, Category, Description, Language, DirectorID,MovieIMG) " +
+            "VALUES (@name, @date, @agerating, @runtime, @category, @description, @language, @directorid,@movieimg);";
 
             conn = new SqlConnection(connectionString);
             cmd = new SqlCommand(query, conn);
@@ -237,8 +238,46 @@ namespace MovieTheater
             return success;
 
         } // ends AddMovie
-        
-    }
+
+
+        public byte[] GetImage(int id)
+        {
+            query = "Select MovieIMG from Movies where MovieID = @id;";
+            conn = new SqlConnection(connectionString);
+            cmd = new SqlCommand(query, conn);
+            cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            byte[] img;
+            try
+            {
+                conn.Open();
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    img = (byte[])reader["MovieIMG"];
+
+                }
+                else
+                {
+                    img = null;
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+            finally
+            {
+                conn.Close();
+
+            }
+
+            return img;
+        }
+
+
+    } // ends get img
 
 
 

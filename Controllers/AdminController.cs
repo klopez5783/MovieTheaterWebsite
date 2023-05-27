@@ -1,6 +1,10 @@
-﻿using System;
+﻿using MovieTheater.Utilities;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 
@@ -31,14 +35,22 @@ namespace MovieTheater.Controllers
             return View(TempMovie);
         }
 
-
         [HttpPost]
         public ActionResult EditMovie(Movies TempMovie)
-        {
-            Movies Movie;
+        {   
             MovieDataAccess movieData = new MovieDataAccess();
             movieData.EditMovie(TempMovie);
             return RedirectToAction("ListMovies");
+        }
+
+
+        [HttpGet]
+        public ActionResult MovieDetails(int id)
+        {
+            Movies tempMovie;
+            MovieDataAccess access = new MovieDataAccess();
+            tempMovie = access.FindMovie(id);
+            return View(tempMovie);
         }
 
         [HttpGet]
@@ -73,11 +85,42 @@ namespace MovieTheater.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (TempMovie.ImageFile != null && TempMovie.ImageFile.ContentLength > 0)
+                {
+                    byte[] imageData;
+                    using (var binaryReader = new BinaryReader(TempMovie.ImageFile.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(TempMovie.ImageFile.ContentLength);
+                    }
+                    TempMovie.MovieIMG = imageData;
+                }
+
                 MovieDataAccess dataAccess = new MovieDataAccess();
                 dataAccess.AddMovie(TempMovie);
                 return RedirectToAction("ListMovies");
             }
             return View();  
         }
+
+
+
+        public ActionResult GetMovieIMG(int id)
+        {
+            MovieDataAccess access = new MovieDataAccess();
+            byte[] imageData;
+            imageData = access.GetImage(id);
+            if (imageData != null)
+            {
+                string imageType = ImageUtility.GetImageType(imageData);
+                var result = new FileContentResult(imageData, imageType);
+
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
     }
 }
