@@ -11,6 +11,7 @@ namespace MovieTheater
     {
         public int MovieID { get; set; }
         public string Name { get; set; }
+
         
         public DateTime Date { get; set; }
 

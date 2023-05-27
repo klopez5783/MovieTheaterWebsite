@@ -7,7 +7,7 @@
 <h2>ListMovies</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add New Movie", "AddMovie")
 </p>
 <table class="table">
     <tr>
@@ -72,8 +72,8 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "EditMovie", new { id = item.MovieID })
-            @Html.ActionLink("Details", "Details", new { id = item.MovieID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.MovieID })
+            @Html.ActionLink("Details", "MovieDetails", new { id = item.MovieID }) |
+            @Html.ActionLink("Delete", "DeleteMovie", new { id = item.MovieID })
         </td>
     </tr>
 }
