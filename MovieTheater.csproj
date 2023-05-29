@@ -226,16 +226,25 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Admin\ListMovies.cshtml">
+    <Content Include="Views\Admin\Movie\ListMovies.cshtml">
       <BrowseToURL>~/Admin/ListMovies</BrowseToURL>
     </Content>
-    <Content Include="Views\Admin\EditMovie.cshtml" />
-    <Content Include="Views\Admin\DeleteMovie.cshtml" />
-    <Content Include="Views\Admin\AddMovie.cshtml" />
-    <Content Include="Views\Admin\MovieDetails.cshtml" />
+    <Content Include="Views\Admin\Movie\EditMovie.cshtml">
+      <BrowseToURL>~/Admin/EditMovie</BrowseToURL>
+    </Content>
+    <Content Include="Views\Admin\Movie\DeleteMovie.cshtml">
+      <BrowseToURL>~/Admin/DeleteMovie</BrowseToURL>
+    </Content>
+    <Content Include="Views\Admin\Movie\AddMovie.cshtml">
+      <BrowseToURL>~/Admin/AddMovie</BrowseToURL>
+    </Content>
+    <Content Include="Views\Admin\Movie\MovieDetails.cshtml">
+      <BrowseToURL>~/Admin/MovieDetails</BrowseToURL>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

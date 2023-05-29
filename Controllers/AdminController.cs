@@ -23,7 +23,7 @@ namespace MovieTheater.Controllers
             List <Movies> list = new List<Movies>();
             MovieDataAccess movies = new MovieDataAccess();
             list = movies.getAllMovies();
-            return View(list);
+            return View("Movie/ListMovies",list);
         }
 
         [HttpGet]
@@ -32,15 +32,24 @@ namespace MovieTheater.Controllers
             Movies TempMovie;
             MovieDataAccess movieData = new MovieDataAccess();
             TempMovie = movieData.FindMovie(id);
-            return View(TempMovie);
+            return View("Movie/EditMovie", TempMovie);
         }
 
         [HttpPost]
         public ActionResult EditMovie(Movies TempMovie)
-        {   
+        {
+            if (TempMovie.ImageFile != null && TempMovie.ImageFile.ContentLength > 0)
+            {
+                byte[] imageData;
+                using (var binaryReader = new BinaryReader(TempMovie.ImageFile.InputStream))
+                {
+                    imageData = binaryReader.ReadBytes(TempMovie.ImageFile.ContentLength);
+                }
+                TempMovie.MovieIMG = imageData;
+            }
             MovieDataAccess movieData = new MovieDataAccess();
             movieData.EditMovie(TempMovie);
-            return RedirectToAction("ListMovies");
+            return RedirectToAction("Movie/ListMovies");
         }
 
 
@@ -50,7 +59,7 @@ namespace MovieTheater.Controllers
             Movies tempMovie;
             MovieDataAccess access = new MovieDataAccess();
             tempMovie = access.FindMovie(id);
-            return View(tempMovie);
+            return View("Movie/MovieDetails" , tempMovie);
         }
 
         [HttpGet]
@@ -59,7 +68,7 @@ namespace MovieTheater.Controllers
             Movies TempMovie;
             MovieDataAccess movieData = new MovieDataAccess();
             TempMovie = movieData.FindMovie(id);
-            return View(TempMovie);
+            return View("Movie/DeleteMovie" , TempMovie);
 
         }
 
@@ -70,15 +79,16 @@ namespace MovieTheater.Controllers
         {
             MovieDataAccess tempmovie = new MovieDataAccess();
             tempmovie.DeleteMovie(id);
-            return RedirectToAction("ListMovies");
+            return RedirectToAction("Movie/ListMovies");
         }
 
 
         [HttpGet]
         public ActionResult AddMovie()
         {
-            return View();
+            return View("Movie/AddMovie");
         }
+
 
         [HttpPost]
         public ActionResult AddMovie(Movies TempMovie)

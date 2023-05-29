@@ -106,7 +106,15 @@ namespace MovieTheater
                     movie.Description = reader["Description"].ToString();
                     movie.Language = reader["Language"].ToString();
                     movie.DirectorID = (int)reader["DirectorID"];
-                    movie.MovieIMG = (byte[])reader["MovieIMG"];
+                    if ( reader["MovieIMG"] != DBNull.Value )
+                    {
+                        movie.MovieIMG = (byte[])reader["MovieIMG"];
+                    }
+                    else
+                    {
+                        movie.MovieIMG = null;
+                    }
+                   
                 }
             }
             catch (SqlException ex)
