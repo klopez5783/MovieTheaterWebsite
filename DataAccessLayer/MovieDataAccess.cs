@@ -26,7 +26,11 @@ namespace MovieTheater
             cmd.Parameters.Add("@description", SqlDbType.NVarChar, 50).Value = movie.Description;
             cmd.Parameters.Add("@language", SqlDbType.NVarChar, 50).Value = movie.Language;
             cmd.Parameters.Add("@directorid", SqlDbType.Int).Value = movie.DirectorID;
-            cmd.Parameters.Add("@movieimg", SqlDbType.Image).Value = movie.MovieIMG;
+            if(movie.MovieIMG != null)
+            {
+                cmd.Parameters.Add("@movieimg", SqlDbType.Image).Value = movie.MovieIMG;
+            }
+            
 
             return movie;
 
@@ -131,11 +135,20 @@ namespace MovieTheater
 
         public bool EditMovie(Movies movie)
         {
-            int rows = 0;
-            query = "Update Movies " +
+            if( movie.MovieIMG == null)
+            {
+                query = "Update Movies " +
+                "Set Name = @name, Date = @date, AgeRating = @agerating, Runtime = @runtime , Category = @category, Description = @description" +
+                ",Language = @language , DirectorID = @directorid where MovieID = @id  ;";
+            }
+            else
+            {
+                query = "Update Movies " +
                 "Set Name = @name, Date = @date, AgeRating = @agerating, Runtime = @runtime , Category = @category, Description = @description" +
                 ",Language = @language , DirectorID = @directorid , MovieIMG = @movieimg where MovieID = @id  ;";
-
+            }
+            int rows = 0;
+            
             conn = new SqlConnection(connectionString);
             cmd = new SqlCommand(query, conn);
             cmd.Parameters.Add("@id", SqlDbType.Int).Value = movie.MovieID;
@@ -209,8 +222,16 @@ namespace MovieTheater
         public bool AddMovie(Movies movie)
         {
             int rows = 0;
-            query = "INSERT INTO Movies (Name, Date, AgeRating, Runtime, Category, Description, Language, DirectorID,MovieIMG) " +
-            "VALUES (@name, @date, @agerating, @runtime, @category, @description, @language, @directorid,@movieimg);";
+            if (movie.MovieIMG != null)
+            {
+                query = "INSERT INTO Movies (Name, Date, AgeRating, Runtime, Category, Description, Language, DirectorID,MovieIMG) " +
+                "VALUES (@name, @date, @agerating, @runtime, @category, @description, @language, @directorid,@movieimg);";
+            }
+            else
+            {
+                query = "INSERT INTO Movies (Name, Date, AgeRating, Runtime, Category, Description, Language, DirectorID) " +
+               "VALUES (@name, @date, @agerating, @runtime, @category, @description, @language, @directorid);";
+            }
 
             conn = new SqlConnection(connectionString);
             cmd = new SqlCommand(query, conn);

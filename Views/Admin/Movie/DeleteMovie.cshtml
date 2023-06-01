@@ -95,12 +95,12 @@
 
     </div>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm("DeleteMovie", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" })) { 
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-danger" /> |
-            @Html.ActionLink("Back to List", "ListMovies")
-        </div>
+    <div class="form-actions no-color">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        @Html.ActionLink("Back to List", "ListMovies")
+    </div>
     }
 </div>

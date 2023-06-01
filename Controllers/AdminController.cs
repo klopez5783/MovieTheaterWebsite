@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
+using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,14 +21,14 @@ namespace MovieTheater.Controllers
         [HttpGet]
         public ActionResult ListMovies()
         {
-            List <Movies> list = new List<Movies>();
+            List<Movies> list = new List<Movies>();
             MovieDataAccess movies = new MovieDataAccess();
             list = movies.getAllMovies();
-            return View("Movie/ListMovies",list);
+            return View("Movie/ListMovies", list);
         }
 
         [HttpGet]
-        public ActionResult EditMovie( int id )
+        public ActionResult EditMovie(int id)
         {
             Movies TempMovie;
             MovieDataAccess movieData = new MovieDataAccess();
@@ -38,6 +39,7 @@ namespace MovieTheater.Controllers
         [HttpPost]
         public ActionResult EditMovie(Movies TempMovie)
         {
+
             if (TempMovie.ImageFile != null && TempMovie.ImageFile.ContentLength > 0)
             {
                 byte[] imageData;
@@ -47,9 +49,13 @@ namespace MovieTheater.Controllers
                 }
                 TempMovie.MovieIMG = imageData;
             }
+            else
+            {
+                TempMovie.MovieIMG = null;
+            }
             MovieDataAccess movieData = new MovieDataAccess();
             movieData.EditMovie(TempMovie);
-            return RedirectToAction("Movie/ListMovies");
+            return RedirectToAction("ListMovies");
         }
 
 
@@ -59,16 +65,16 @@ namespace MovieTheater.Controllers
             Movies tempMovie;
             MovieDataAccess access = new MovieDataAccess();
             tempMovie = access.FindMovie(id);
-            return View("Movie/MovieDetails" , tempMovie);
+            return View("Movie/MovieDetails", tempMovie);
         }
 
         [HttpGet]
-        public ActionResult DeleteMovie ( int id )
+        public ActionResult DeleteMovie(int id)
         {
             Movies TempMovie;
             MovieDataAccess movieData = new MovieDataAccess();
             TempMovie = movieData.FindMovie(id);
-            return View("Movie/DeleteMovie" , TempMovie);
+            return View("Movie/DeleteMovie", TempMovie);
 
         }
 
@@ -79,7 +85,7 @@ namespace MovieTheater.Controllers
         {
             MovieDataAccess tempmovie = new MovieDataAccess();
             tempmovie.DeleteMovie(id);
-            return RedirectToAction("Movie/ListMovies");
+            return RedirectToAction("ListMovies");
         }
 
 
@@ -109,7 +115,7 @@ namespace MovieTheater.Controllers
                 dataAccess.AddMovie(TempMovie);
                 return RedirectToAction("ListMovies");
             }
-            return View();  
+            return View();
         }
 
 
@@ -130,7 +136,46 @@ namespace MovieTheater.Controllers
             {
                 return null;
             }
+
+        }
+
+
+        public ActionResult ListActors()
+        {
+            List<Actors> list = new List<Actors>();
+            ActorsDataAccess access = new ActorsDataAccess();
+            list = access.ListActors();
+            return View("Actors/ListActors", list);
+        }
+
+        [HttpGet]
+        public ActionResult AddActor()
+        {
+            return View("Actors/AddActor");
+        }
+
+        [HttpPost]
+        public ActionResult AddActor(Actors actor)
+        {
+            if (ModelState.IsValid)
+            {
+                if (actor.ImageFile != null && actor.ImageFile.ContentLength > 0)
+                {
+                    byte[] imageData;
+                    using (var binaryReader = new BinaryReader(actor.ImageFile.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(actor.ImageFile.ContentLength);
+                    }
+                    actor.ActorIMG = imageData;
+                }
+                ActorsDataAccess access = new ActorsDataAccess();
+                access.AddActor(actor);
+                return RedirectToAction("ListActors");
+            }
+            return View();
+            
         }
 
     }
+
 }
