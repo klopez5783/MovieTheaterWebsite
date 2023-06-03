@@ -249,6 +249,15 @@
     <Content Include="Views\Admin\Actors\AddActor.cshtml">
       <BrowseToURL>~/Admin/AddActor</BrowseToURL>
     </Content>
+    <Content Include="Views\Admin\Actors\EditActor.cshtml">
+      <BrowseToURL>~/Admin/ListActors</BrowseToURL>
+    </Content>
+    <Content Include="Views\Admin\Actors\ActorDetails.cshtml">
+      <BrowseToURL>~/Admin/ActorDetails</BrowseToURL>
+    </Content>
+    <Content Include="Views\Admin\Actors\DeleteActor.cshtml">
+      <BrowseToURL>~/Admin/DeleteActor</BrowseToURL>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

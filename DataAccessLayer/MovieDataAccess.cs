@@ -269,7 +269,7 @@ namespace MovieTheater
         } // ends AddMovie
 
 
-        public byte[] GetImage(int id)
+        public byte[] GetMovieImage(int id)
         {
             query = "Select MovieIMG from Movies where MovieID = @id;";
             conn = new SqlConnection(connectionString);
@@ -303,10 +303,10 @@ namespace MovieTheater
             }
 
             return img;
-        }
+        }// ends get img
 
 
-    } // ends get img
+    } 
 
 
 

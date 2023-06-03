@@ -41,9 +41,9 @@
             @Html.DisplayFor(modelItem => item.Gender)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit Actor", "EditActor", new {  id=item.ActorID }) |
+            @Html.ActionLink("Actor Details", "ActorDetails", new { id = item.ActorID }) |
+            @Html.ActionLink("Delete Actor", "DeleteActor", new { id = item.ActorID })
         </td>
     </tr>
 }

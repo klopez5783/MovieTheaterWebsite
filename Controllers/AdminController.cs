@@ -124,7 +124,7 @@ namespace MovieTheater.Controllers
         {
             MovieDataAccess access = new MovieDataAccess();
             byte[] imageData;
-            imageData = access.GetImage(id);
+            imageData = access.GetMovieImage(id);
             if (imageData != null)
             {
                 string imageType = ImageUtility.GetImageType(imageData);
@@ -174,6 +174,85 @@ namespace MovieTheater.Controllers
             }
             return View();
             
+        }
+
+
+
+        [HttpGet]
+        public ActionResult EditActor(int id)
+        {
+            ActorsDataAccess access =  new ActorsDataAccess();
+            Actors actor;
+            actor = access.FindActor(id);
+            return View("Actors/EditActor",actor);
+        }
+
+
+        [HttpPost]
+        public ActionResult EditActor(Actors actors)
+        {
+            if (actors.ImageFile != null && actors.ImageFile.ContentLength > 0)
+            {
+                byte[] imageData;
+                using (var binaryReader = new BinaryReader(actors.ImageFile.InputStream))
+                {
+                    imageData = binaryReader.ReadBytes(actors.ImageFile.ContentLength);
+                }
+                actors.ActorIMG = imageData;
+            }
+            else
+            {
+                actors.ActorIMG = null;
+            }
+            ActorsDataAccess access = new ActorsDataAccess();
+            access.EditMovie(actors);
+            return RedirectToAction("ListActors");
+        }
+
+        [HttpGet]
+        public ActionResult ActorDetails(int id)
+        {
+            ActorsDataAccess access = new ActorsDataAccess();
+            Actors actor;
+            actor = access.FindActor(id);
+            return View("Actors/ActorDetails", actor);
+        }
+
+        [HttpGet]
+        public ActionResult DeleteActor(int id)
+        {
+            ActorsDataAccess access = new ActorsDataAccess();
+            Actors actor;
+            actor = access.FindActor(id);
+            return View("Actors/DeleteActor", actor);
+        }
+
+        [HttpPost, ActionName("DeleteActor")]
+        public ActionResult DeleteActorConfirm(int id)
+        {
+            ActorsDataAccess actor = new ActorsDataAccess();
+            actor.DeleteActor(id);
+            return RedirectToAction("ListActors");
+        }
+
+
+        public ActionResult GetActorIMG(int id)
+        {
+            ActorsDataAccess access = new ActorsDataAccess();
+            byte[] imageData;
+            imageData = access.GetActorImage(id);
+            if (imageData != null)
+            {
+                string imageType = ImageUtility.GetImageType(imageData);
+                var result = new FileContentResult(imageData, imageType);
+
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
     }
