@@ -255,6 +255,56 @@ namespace MovieTheater.Controllers
 
         }
 
+
+        public ActionResult ListMovieCast()
+        {
+            List<MovieCast> list = new List<MovieCast>();
+            MovieCastDataAccess access = new MovieCastDataAccess();
+            list = access.getAllMoviesCast();
+            return View("MovieCast/ListMovieCast",list);
+        }
+
+        [HttpGet]
+        public ActionResult AddMovieCast()
+        {
+            return View("MovieCast/AddMovieCast");
+        }
+
+
+        [HttpPost]
+        public ActionResult AddMovieCast(MovieCast TempMovie)
+        {
+            if (ModelState.IsValid)
+            {
+                MovieCastDataAccess dataAccess = new MovieCastDataAccess();
+                dataAccess.AddMovieCast(TempMovie);
+                return RedirectToAction("ListMovieCast");
+            }
+            return View();
+        }
+
+
+        [HttpGet]
+        public ActionResult EditMovieCast(int MovieID, int ActorID )
+        {
+            MovieCast movieCast = new MovieCast();
+            MovieCastDataAccess access = new MovieCastDataAccess();
+            movieCast = access.FindMovieCast(MovieID, ActorID);
+            return View("MovieCast/EditMovieCast", movieCast);
+        }
+
+        [HttpPost]
+        public ActionResult EditMovieCast(MovieCast MovieCast)
+        {
+            if (ModelState.IsValid)
+            {
+                MovieCastDataAccess access = new MovieCastDataAccess();
+                access.EditMovieCast(MovieCast);
+                return RedirectToAction("ListMovieCast");
+            }
+            return View();
+        }
+
     }
 
 }
