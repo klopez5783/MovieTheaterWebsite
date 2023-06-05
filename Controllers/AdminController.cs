@@ -290,6 +290,8 @@ namespace MovieTheater.Controllers
             MovieCast movieCast = new MovieCast();
             MovieCastDataAccess access = new MovieCastDataAccess();
             movieCast = access.FindMovieCast(MovieID, ActorID);
+            movieCast.OldMovieID = MovieID;
+            movieCast.OldActorID = ActorID; 
             return View("MovieCast/EditMovieCast", movieCast);
         }
 
@@ -303,6 +305,34 @@ namespace MovieTheater.Controllers
                 return RedirectToAction("ListMovieCast");
             }
             return View();
+        }
+
+
+        [HttpGet]
+        public ActionResult DeleteMovieCast(int MovieID, int ActorID)
+        {
+            MovieCast movieCast = new MovieCast();
+            MovieCastDataAccess access = new MovieCastDataAccess();
+            movieCast = access.FindMovieCast(MovieID,ActorID);
+            return View("MovieCast/DeleteMovieCast", movieCast);
+        }
+
+        [HttpPost, ActionName("DeleteMovieCast")]
+        public ActionResult DeleteMovieCastConfirm(int MovieID, int ActorID)
+        {
+            MovieCast movieCast = new MovieCast();
+            MovieCastDataAccess access = new MovieCastDataAccess();
+            access.DeleteMovieCast(MovieID, ActorID);
+            return RedirectToAction("ListMovieCast");
+        }
+
+        [HttpGet]
+        public ActionResult MovieCastDetails(int MovieID, int ActorID)
+        {
+            MovieCast movieCast = new MovieCast();
+            MovieCastDataAccess access = new MovieCastDataAccess();
+            movieCast = access.FindMovieCast(MovieID, ActorID);
+            return View("MovieCast/MovieCastDetails", movieCast);
         }
 
     }

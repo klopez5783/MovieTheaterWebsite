@@ -108,11 +108,14 @@ namespace MovieTheater
         public bool EditMovieCast(MovieCast movie)
         {
             query = "Update MovieCast" +
-                " set MovieID = @movieid , ActorID = @actorid, Role = @role where MovieID = @movieid and ActorID = @actorid;";
+                " set MovieID = @movieid , ActorID = @actorid, Role = @role where MovieID = @oldmovieid and ActorID = @oldactorid;";
             int rows = 0;
 
             conn = new SqlConnection(connectionString);
             cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.Add("@oldmovieid", SqlDbType.Int).Value = movie.OldMovieID;
+            cmd.Parameters.Add("@oldactorid", SqlDbType.Int).Value = movie.OldActorID;
 
             MovieCastVariablesSet(movie);
             try
@@ -143,10 +146,10 @@ namespace MovieTheater
         }// ends EditMovie
 
 
-        public bool DeleteMovie(int id , int actorid)
+        public bool DeleteMovieCast(int id , int actorid)
         {
             int rows = 0;
-            query = "Delete from Movies where MovieID = @id and ActorID = @actorid;";
+            query = "Delete from MovieCast where MovieID = @id and ActorID = @actorid;";
 
             conn = new SqlConnection(connectionString);
             cmd = new SqlCommand(query, conn);

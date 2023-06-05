@@ -36,8 +36,8 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "EditMovieCast", new {  MovieID = item.MovieID , ActorID = item.ActorID  }) |
-            @Html.ActionLink("Details", "Details", new { MovieID = item.MovieID, ActorID = item.ActorID }) |
-            @Html.ActionLink("Delete", "Delete", new { MovieID = item.MovieID, ActorID = item.ActorID })
+            @Html.ActionLink("Details", "MovieCastDetails", new { MovieID = item.MovieID, ActorID = item.ActorID }) |
+            @Html.ActionLink("Delete", "DeleteMovieCast", new { MovieID = item.MovieID, ActorID = item.ActorID })
         </td>
     </tr>
 }

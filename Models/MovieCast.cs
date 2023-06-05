@@ -8,6 +8,10 @@ namespace MovieTheater
 {
     public class MovieCast
     {
+        public int OldMovieID { get; set; } 
+
+        public int OldActorID { get; set; } 
+
         public int MovieID { get; set; }
 
         public int ActorID { get; set; }
