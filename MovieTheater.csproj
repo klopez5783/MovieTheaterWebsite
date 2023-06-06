@@ -125,12 +125,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DataAccessLayer\ActorsDataAccess.cs" />
     <Compile Include="DataAccessLayer\BaseTier.cs" />
+    <Compile Include="DataAccessLayer\DirectorDataAccess.cs" />
     <Compile Include="DataAccessLayer\MovieCastDataAccess.cs" />
     <Compile Include="DataAccessLayer\MovieDataAccess.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Actors.cs" />
+    <Compile Include="Models\Director.cs" />
     <Compile Include="Models\MovieCast.cs" />
     <Compile Include="Models\Movies.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -275,6 +277,22 @@
     <Content Include="Views\Admin\MovieCast\MovieCastDetails.cshtml">
       <BrowseToURL>~/Admin/MovieCastDetails</BrowseToURL>
     </Content>
+    <Content Include="Views\Admin\Directors\ListDirectors.cshtml">
+      <BrowseToURL>~/Admin/ListDirectors</BrowseToURL>
+    </Content>
+    <Content Include="Views\Admin\Directors\AddDirector.cshtml">
+      <BrowseToURL>~/Admin/AddDirector</BrowseToURL>
+    </Content>
+    <Content Include="Views\Admin\Directors\EditDirector.cshtml">
+      <BrowseToURL>~/Admin/EditDirector</BrowseToURL>
+    </Content>
+    <Content Include="Views\Admin\Directors\DeleteDirector.cshtml">
+      <BrowseToURL>~/Admin/DeleteDirector</BrowseToURL>
+    </Content>
+    <Content Include="Views\Admin\Directors\DirectorDetails.cshtml">
+      <BrowseToURL>~/Admin/DirectorDetails</BrowseToURL>
+    </Content>
+    <Content Include="Views\Admin\AdminButtons.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

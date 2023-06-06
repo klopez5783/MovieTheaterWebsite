@@ -335,6 +335,81 @@ namespace MovieTheater.Controllers
             return View("MovieCast/MovieCastDetails", movieCast);
         }
 
+
+        [HttpGet]
+        public ActionResult ListDirectors()
+        {
+            List<Director> list = new List<Director>(); 
+            DirectorDataAccess access = new DirectorDataAccess();
+            list = access.getAllDirectors();
+            return View("Directors/ListDirectors",list);
+        }
+
+
+        [HttpGet]
+        public ActionResult AddDirector()
+        {
+            return View("Directors/AddDirector");
+        }
+
+
+        [HttpPost]
+        public ActionResult AddDirector(Director director)
+        {
+            if (ModelState.IsValid)
+            {
+                DirectorDataAccess access = new DirectorDataAccess();
+                access.AddDirector(director);
+                return RedirectToAction("ListDirectors");
+            }
+            return View("Directors/AddDirector");
+        }
+
+        [HttpGet]
+        public ActionResult EditDirector(int id)
+        {
+            DirectorDataAccess data = new DirectorDataAccess();
+            Director director = data.FindDirector(id);
+            return View("Directors/EditDirector", director);
+        }
+
+
+        [HttpPost]
+        public ActionResult EditDirector(Director director)
+        {
+            if (ModelState.IsValid)
+            {
+                DirectorDataAccess access=new DirectorDataAccess();
+                access.EditDirector(director);
+                return RedirectToAction("ListDirectors");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult DeleteDirector(int id)
+        {
+            DirectorDataAccess data = new DirectorDataAccess();
+            Director director = data.FindDirector(id);
+            return View("Directors/DeleteDirector", director);
+        }
+
+        [HttpPost, ActionName("DeleteDirector")]
+        public ActionResult DeleteDirectorConfirm(int id)
+        {
+            DirectorDataAccess access = new DirectorDataAccess();
+            access.DeleteDirector(id);
+            return RedirectToAction("ListDirectors");
+        }
+
+        [HttpGet]
+        public ActionResult DirectorDetails(int id)
+        {
+            DirectorDataAccess data = new DirectorDataAccess();
+            Director director = data.FindDirector(id);
+            return View("Directors/DirectorDetails", director);
+        }
+
     }
 
 }
