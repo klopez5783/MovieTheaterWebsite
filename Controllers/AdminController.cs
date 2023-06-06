@@ -13,7 +13,7 @@ namespace MovieTheater.Controllers
 {
     public class AdminController : Controller
     {
-        public ActionResult index()
+        public ActionResult AdminButtons()
         {
             return View();
         }
