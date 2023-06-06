@@ -1,0 +1,44 @@
+﻿@model MovieTheater.MovieCast
+
+@{
+    ViewBag.Title = "MovieCastDetails";
+}
+
+<h2>MovieCastDetails</h2>
+
+<div>
+    <h4>MovieCast</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovieID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovieID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActorID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActorID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Role)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Role)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditMovieCast", new { MovieID = Model.MovieID, ActorID = Model.ActorID }) |
+    @Html.ActionLink("Back to List", "ListMovieCast")
+</p>

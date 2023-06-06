@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MovieTheater.MovieCast>
+
+@{
+    ViewBag.Title = "ListMovieCast";
+}
+
+<h2>ListMovieCast</h2>
+
+<p>
+    @Html.ActionLink("Insert New Role", "AddMovieCast")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActorID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Role)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MovieID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActorID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Role)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditMovieCast", new {  MovieID = item.MovieID , ActorID = item.ActorID  }) |
+            @Html.ActionLink("Details", "MovieCastDetails", new { MovieID = item.MovieID, ActorID = item.ActorID }) |
+            @Html.ActionLink("Delete", "DeleteMovieCast", new { MovieID = item.MovieID, ActorID = item.ActorID })
+        </td>
+    </tr>
+}
+
+</table>
