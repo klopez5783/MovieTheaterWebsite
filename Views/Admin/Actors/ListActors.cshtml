@@ -4,48 +4,60 @@
     ViewBag.Title = "ListActors";
 }
 
-<h2>ListActors</h2>
+<div class="card">
+    <div class="card-header">
+        <h3>Actors</h3>
+    </div>
+    <div>
+        <input style="margin:8px 5px 8px 5px;" type="button" class="btn btn-primary" value="Back to Admin Tools" onclick="location.href='@Url.Action("AdminButtons", "Admin")'" />
+        <input style="margin:8px 5px 8px 5px;" type="button" class="btn btn-primary" value="Add Actor" onclick="location.href='@Url.Action("AddActor", "Admin")'" />
+       
+    </div>
+    
+    <div class="d-flex justify-content-around card text-center">
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.ActorID)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Gender)
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
 
-<p>
-    @Html.ActionLink("Add Actor", "AddActor")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ActorID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Gender)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ActorID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.ActionLink("Edit Actor", "EditActor", new {  id=item.ActorID }) |
-            @Html.ActionLink("Actor Details", "ActorDetails", new { id = item.ActorID }) |
-            @Html.ActionLink("Delete Actor", "DeleteActor", new { id = item.ActorID })
-        </td>
-    </tr>
-}
-
-</table>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@Html.DisplayFor(modelItem => item.ActorID)</th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit Actor", "EditActor", new { id = item.ActorID }) |
+                            @Html.ActionLink("Actor Details", "ActorDetails", new { id = item.ActorID }) |
+                            @Html.ActionLink("Delete Actor", "DeleteActor", new { id = item.ActorID })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

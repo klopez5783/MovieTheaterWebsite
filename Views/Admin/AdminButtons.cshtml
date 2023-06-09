@@ -3,5 +3,65 @@
     ViewBag.Title = "AdminButtons";
 }
 
-<h2>AdminButtons</h2>
 
+<div class="card">
+    <div class="card-header">
+        <h3>Database Tools</h3>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-around ">
+
+            <div id="buttonIMG">
+                <a href="@Url.Action("ListActors", "Admin")">
+
+                    <img style="width:200px;height:200px" src="~/Images/ActorsImage.png" />
+                </a>
+                <h4 class="card-title" style="text-align:center;">
+                    @Html.ActionLink("Actors", "ListActors", null, new { @class = "link-secondary"})
+                </h4>
+            </div>
+
+            <div id="buttonIMG">
+                <a href="@Url.Action("ListMovieCast", "Admin")">
+                    <img style="width:200px;height:200px" src="~/Images/CastCrew.png" />
+                </a>
+                <h4 class="card-title" style="text-align:center;">
+                    @Html.ActionLink("Cast and Crew", // <-- Link text
+                                     "ListMovieCast", // <-- Action Method Name
+                                     null, // <-- Route arguments
+                                     new { @class = "link-secondary" } // <-- htmlArguments
+                                     )
+                </h4>
+            </div>
+
+            <div id="buttonIMG">
+                <a href="@Url.Action("ListDirectors", "Admin")">
+                    <img style="width:200px;height:200px" src="~/Images/DirectorsImage.png" />
+
+                </a>
+                <h4 class="card-title" style="text-align:center;">
+                    @Html.ActionLink("Directors", // <-- Link text
+                                     "ListDirectors", // <-- Action Method Name
+                                     null, // <-- Route arguments
+                                     new { @class = "link-secondary" } // <-- htmlArguments
+                                     )
+                </h4>
+            </div>
+
+            <div id="buttonIMG">
+                <a href="@Url.Action("ListMovies", "Admin")">
+                    <img style="width:200px;height:200px" src="~/Images/MovieIcon.png" />
+
+                </a>
+                <h4 class="card-title" style="text-align:center;">
+                    @Html.ActionLink("Movies", // <-- Link text
+                                     "ListMovies", // <-- Action Method Name
+                                     null, // <-- Route arguments
+                                     new { @class = "link-secondary" } // <-- htmlArguments
+                                     )
+                </h4>
+            </div>
+        </div>
+    </div>
+
+</div>
