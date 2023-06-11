@@ -66,7 +66,52 @@
             <div style="width:450px;margin-top:35px;" class="btn-group" role="group" aria-label="Basic mixed styles example">
                 @Html.ActionLink("Back to List", "ListActors", null, new { @class = "btn btn-outline-secondary" })
                 @Html.ActionLink("Edit", "EditActor", new { id = Model.ActorID }, new { @class = "btn btn-outline-secondary" })
-                @Html.ActionLink("Delete Actor", "DeleteActor", "Admin", new { id = Model.ActorID }, new { @class = "btn btn-danger" })
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete_@Model.ActorID">
+                    Delete
+                </button>            
+            </div>
+
+            
+
+
+            <div class="modal fade" id="confirmDelete_@Model.ActorID" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="text-align: center; margin: auto;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="#ff0000" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" fill="#dc3545" />
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" fill="#dc3545" />
+                                </svg>
+                                <h4 style="margin:25px auto 15px auto;">
+                                    Are You Sure?
+                                </h4>
+                            </div>
+
+                            <p style="width: 300px; text-align: center; margin: auto; color: #888888; ">Do you really want to delete this record? This process cannot be undone.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <div style="display: flex; margin: 0px auto 0px auto;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right:10px;">Cancel</button>
+                                @using (Html.BeginForm("DeleteActor", "Admin", new { id = Model.ActorID }, FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    @Html.Hidden("id", Model.ActorID)
+
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
