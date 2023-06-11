@@ -4,51 +4,75 @@
     ViewBag.Title = "ActorDetails";
 }
 
-<h2>ActorDetails</h2>
+<div class="card" style="width:900px;">
+     <div class="card-header" style="margin-bottom:10px;">
+        <h4>Actor Details</h4>
+    </div>
+    <div class="d-flex justify-content-around" style="margin-bottom:20px;">
 
-<div>
-    <h4>Actors</h4>
-    <hr />
-
-    <div style="display:flex;">
         <div>
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.ActorID)
-                </dt>
+            <div class="row g-2" style="margin-bottom:10px;">
+                <div class="col">
+                    <div class="form-floating">
 
-                <dd>
-                    @Html.DisplayFor(model => model.ActorID)
-                </dd>
+                        @Html.EditorFor(model => model.ActorID, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.LabelFor(model => model.ActorID, htmlAttributes: new { disabled = "disabled" })
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </dt>
+                        @Html.ValidationMessageFor(model => model.ActorID, "", new { @class = "text-danger" })
 
-                <dd>
-                    @Html.DisplayFor(model => model.FirstName)
-                </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.LastName)
-                </dt>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating">
+                        @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "" })
 
-                <dd>
-                    @Html.DisplayFor(model => model.LastName)
-                </dd>
+                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.Gender)
-                </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Gender)
-                </dd>
+            </div>
 
-            </dl>
+
+
+
+
+            <div class="row g-2">
+
+
+                <div class="col-md">
+                    <div class="form-floating">
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+
+                        @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "" })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="form-floating">
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "" })
+
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+            </div>
+
+            <div style="width:450px;margin-top:35px;" class="btn-group" role="group" aria-label="Basic mixed styles example">
+                @Html.ActionLink("Back to List", "ListActors", null, new { @class = "btn btn-outline-secondary" })
+                @Html.ActionLink("Edit", "EditActor", new { id = Model.ActorID }, new { @class = "btn btn-outline-secondary" })
+                @Html.ActionLink("Delete Actor", "DeleteActor", "Admin", new { id = Model.ActorID }, new { @class = "btn btn-danger" })
+            </div>
+
         </div>
 
-        <div style="margin-left:200px;">
+
+        <div>
             @if (Model.ActorIMG != null)
             {
                 <img src="@Url.Action("GetActorIMG", "Admin", new { id = Model.ActorID })" alt="Movie Image" />
@@ -60,10 +84,11 @@
             }
         </div>
 
+
     </div>
-    
+
+
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "EditActor", new { id = Model.ActorID }) |
-    @Html.ActionLink("Back to List", "ListActors")
-</p>
+
+

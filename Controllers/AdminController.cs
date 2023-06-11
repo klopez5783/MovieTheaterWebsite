@@ -28,12 +28,20 @@ namespace MovieTheater.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditMovie(int id)
+        public ActionResult EditMovie(int id = 0 )
         {
-            Movies TempMovie;
-            MovieDataAccess movieData = new MovieDataAccess();
-            TempMovie = movieData.FindMovie(id);
-            return View("Movie/EditMovie", TempMovie);
+            if (id == 0)
+            {
+                return RedirectToAction("ListMovies");
+            }
+            else
+            {
+                Movies TempMovie;
+                MovieDataAccess movieData = new MovieDataAccess();
+                TempMovie = movieData.FindMovie(id);
+                return View("Movie/EditMovie", TempMovie);
+            }
+            
         }
 
         [HttpPost]
@@ -179,12 +187,20 @@ namespace MovieTheater.Controllers
 
 
         [HttpGet]
-        public ActionResult EditActor(int id)
+        public ActionResult EditActor(int id = 0)
         {
-            ActorsDataAccess access =  new ActorsDataAccess();
-            Actors actor;
-            actor = access.FindActor(id);
-            return View("Actors/EditActor",actor);
+            if (id == 0)
+            {
+                return RedirectToAction("ListActors");
+            }
+            else
+            {
+                ActorsDataAccess access =  new ActorsDataAccess();
+                Actors actor;
+                actor = access.FindActor(id);
+                return View("Actors/EditActor",actor);
+            }
+            
         }
 
 
@@ -210,21 +226,37 @@ namespace MovieTheater.Controllers
         }
 
         [HttpGet]
-        public ActionResult ActorDetails(int id)
+        public ActionResult ActorDetails(int id = 0)
         {
-            ActorsDataAccess access = new ActorsDataAccess();
-            Actors actor;
-            actor = access.FindActor(id);
-            return View("Actors/ActorDetails", actor);
+            if (id == 0)
+            {
+                return RedirectToAction("ListActors");
+            }
+            else
+            {
+                ActorsDataAccess access = new ActorsDataAccess();
+                Actors actor;
+                actor = access.FindActor(id);
+                return View("Actors/ActorDetails", actor);
+            }
+            
         }
 
         [HttpGet]
-        public ActionResult DeleteActor(int id)
+        public ActionResult DeleteActor(int id = 0)
         {
-            ActorsDataAccess access = new ActorsDataAccess();
-            Actors actor;
-            actor = access.FindActor(id);
-            return View("Actors/DeleteActor", actor);
+            if (id == 0)
+            {
+                return RedirectToAction("ListActors");
+            }
+            else
+            {
+                ActorsDataAccess access = new ActorsDataAccess();
+                Actors actor;
+                actor = access.FindActor(id);
+                return View("Actors/DeleteActor", actor);
+            }
+            
         }
 
         [HttpPost, ActionName("DeleteActor")]

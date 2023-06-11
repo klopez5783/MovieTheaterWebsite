@@ -219,6 +219,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="SVGs\x-circle.svg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -255,7 +256,7 @@
       <BrowseToURL>~/Admin/AddActor</BrowseToURL>
     </Content>
     <Content Include="Views\Admin\Actors\EditActor.cshtml">
-      <BrowseToURL>~/Admin/ListActors</BrowseToURL>
+      <BrowseToURL>~/Admin/EditActor</BrowseToURL>
     </Content>
     <Content Include="Views\Admin\Actors\ActorDetails.cshtml">
       <BrowseToURL>~/Admin/ActorDetails</BrowseToURL>

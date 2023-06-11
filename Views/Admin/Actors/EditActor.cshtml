@@ -4,67 +4,95 @@
     ViewBag.Title = "EditActor";
 }
 
-<h2>EditActor</h2>
 
 
 @using (Html.BeginForm("EditActor", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Actors</h4>
-        <hr />
+<div class="form-horizontal">
+
+    <hr />
 
 
-        <div style="display:flex;">
+    <div class="card">
+        <div class="card-header" style="margin-bottom:10px;">
+            <h4>Edit Actor</h4>
+        </div>
+        <div class="d-flex justify-content-around" style="margin-bottom:20px;">
 
             <div>
+                <div class="row g-2" style="margin-bottom:10px;">
+                    <div class="col">
+                        <div class="form-floating">
+
+                            @Html.EditorFor(model => model.ActorID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => model.ActorID, htmlAttributes: new { @class = "" })
+
+                            @Html.ValidationMessageFor(model => model.ActorID, "", new { @class = "text-danger" })
 
 
-
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ActorID, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.ActorID, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ActorID, "", new { @class = "text-danger" })
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
+                    <div class="col">
+                        <div class="form-floating">
+                            @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "" })
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
-                    </div>
                 </div>
 
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ImageFile, "Select Image")
-                    <input type="file" name="ImageFile" id="ImageFile" />
+
+
+
+                <div class="row g-2">
+
+
+                    <div class="col-md">
+                        <div class="form-floating">
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+
+                            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "" })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <div class="form-floating">
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "" })
+
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="input-group mb-3" style="margin-top:20px;">
+                    <input type="file" class="form-control" name="ImageFile" id="ImageFile">
+                    @Html.LabelFor(model => model.ImageFile, "")
+                </div>
+
+                <div style="width:450px;margin-top:35px;" class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    @Html.ActionLink("Back to List", "ListActors", null, new { @class = "btn btn-outline-secondary" })
+                    <input type="submit" value="Save" class="btn btn-outline-success" />
+                    @Html.ActionLink("Delete Actor", "DeleteActor", "Admin", new { id = Model.ActorID }, new { @class = "btn btn-danger" })
                 </div>
 
             </div>
 
 
-            <div style="margin-left:200px;">
+            <div>
                 @if (Model.ActorIMG != null)
                 {
                     <img src="@Url.Action("GetActorIMG", "Admin", new { id = Model.ActorID })" alt="Movie Image" />
@@ -79,17 +107,22 @@
 
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-success" />
-            </div>
-        </div>
+        
+        
+
     </div>
+
+    
+
+</div>
+
+
+        
+
+        
 }
 
-<div>
-    @Html.ActionLink("Back to List", "ListActors")
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
