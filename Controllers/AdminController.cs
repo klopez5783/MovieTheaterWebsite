@@ -1,4 +1,5 @@
-﻿using MovieTheater.Utilities;
+﻿using Antlr.Runtime.Misc;
+using MovieTheater.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -390,6 +391,15 @@ namespace MovieTheater.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (director.ImageFile != null && director.ImageFile.ContentLength > 0)
+                {
+                    byte[] imageData;
+                    using (var binaryReader = new BinaryReader(director.ImageFile.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(director.ImageFile.ContentLength);
+                    }
+                    director.DirectorIMG = imageData;
+                }
                 DirectorDataAccess access = new DirectorDataAccess();
                 access.AddDirector(director);
                 return RedirectToAction("ListDirectors");
@@ -398,11 +408,18 @@ namespace MovieTheater.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditDirector(int id)
+        public ActionResult EditDirector(int id = 0)
         {
-            DirectorDataAccess data = new DirectorDataAccess();
-            Director director = data.FindDirector(id);
-            return View("Directors/EditDirector", director);
+            if (id == 0)
+            {
+                return RedirectToAction("ListDirectors");
+            }
+            else
+            {
+                DirectorDataAccess data = new DirectorDataAccess();
+                Director director = data.FindDirector(id);
+                return View("Directors/EditDirector", director);
+            }
         }
 
 
@@ -411,6 +428,19 @@ namespace MovieTheater.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (director.ImageFile != null && director.ImageFile.ContentLength > 0)
+                {
+                    byte[] imageData;
+                    using (var binaryReader = new BinaryReader(director.ImageFile.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(director.ImageFile.ContentLength);
+                    }
+                    director.DirectorIMG = imageData;
+                }
+                else
+                {
+                    director.DirectorIMG = null;
+                }
                 DirectorDataAccess access=new DirectorDataAccess();
                 access.EditDirector(director);
                 return RedirectToAction("ListDirectors");
@@ -419,7 +449,7 @@ namespace MovieTheater.Controllers
         }
 
         [HttpGet]
-        public ActionResult DeleteDirector(int id)
+        public ActionResult DeleteDirector(int id = 0)
         {
             DirectorDataAccess data = new DirectorDataAccess();
             Director director = data.FindDirector(id);
@@ -435,11 +465,38 @@ namespace MovieTheater.Controllers
         }
 
         [HttpGet]
-        public ActionResult DirectorDetails(int id)
+        public ActionResult DirectorDetails(int id = 0)
         {
+            if (id == 0)
+            {
+                return RedirectToAction("ListDirectors");
+            }
+            else
+            {
             DirectorDataAccess data = new DirectorDataAccess();
             Director director = data.FindDirector(id);
             return View("Directors/DirectorDetails", director);
+            }
+            
+        }
+
+        public ActionResult GetDirectorIMG(int id)
+        {
+            DirectorDataAccess access = new DirectorDataAccess();
+            byte[] imageData;
+            imageData = access.GetDirectorImage(id);
+            if (imageData != null)
+            {
+                string imageType = ImageUtility.GetImageType(imageData);
+                var result = new FileContentResult(imageData, imageType);
+
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
     }
