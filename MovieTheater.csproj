@@ -131,7 +131,9 @@
     <Compile Include="Models\Actors.cs" />
     <Compile Include="Models\Director.cs" />
     <Compile Include="Models\MovieCast.cs" />
+    <Compile Include="Models\MovieImages.cs" />
     <Compile Include="Models\Movies.cs" />
+    <Compile Include="Models\MovieView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
   </ItemGroup>

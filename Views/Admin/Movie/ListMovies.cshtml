@@ -76,8 +76,8 @@
                             @Html.DisplayFor(modelItem => item.DirectorID)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit User View", "EditMovie", new { id = item.DirectorID }, new { @class = "btn btn-secondary btn-sm" })
-                            @Html.ActionLink("User View", "MovieDetails", new { id = item.DirectorID }, new { @class = "btn btn-info btn-sm" })
+                            @Html.ActionLink("Edit User View", "EditMovie", new { id = item.MovieID }, new { @class = "btn btn-secondary btn-sm" })
+                            @Html.ActionLink("User View", "MovieDetails", new { id = item.MovieID }, new { @class = "btn btn-info btn-sm" })
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete_@item.MovieID">
                                 Delete
                             </button>

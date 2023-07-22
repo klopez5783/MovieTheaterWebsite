@@ -39,9 +39,5 @@ namespace MovieTheater
         [Required(ErrorMessage = "Director ID is required.")]
         public int DirectorID { get; set; }
 
-        public byte[] MovieIMG { get; set; }
-
-        public HttpPostedFileBase ImageFile { get; set; }
-
     }
 }
