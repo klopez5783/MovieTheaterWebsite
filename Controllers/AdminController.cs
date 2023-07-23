@@ -39,14 +39,14 @@ namespace MovieTheater.Controllers
             else
             {
                 MovieDataAccess access = new MovieDataAccess();
-                (Movies movie, List<MovieImages> movieImages) = access.FindMovie(id);
+                MovieView movie = access.FindMovie(id);
                 return View("Movie/EditMovie",movie);
             }
             
         }
 
         [HttpPost]
-        public ActionResult EditMovie(Movies TempMovie)
+        public ActionResult EditMovie(MovieView TempMovie)
         {
 
            /* if (TempMovie.ImageFile != null && TempMovie.ImageFile.ContentLength > 0)
@@ -63,7 +63,7 @@ namespace MovieTheater.Controllers
                 TempMovie.MovieIMG = null;
             }*/
             MovieDataAccess movieData = new MovieDataAccess();
-            movieData.EditMovie(TempMovie);
+            movieData.EditMovie(TempMovie.movie);
             return RedirectToAction("ListMovies");
         }
 
@@ -78,7 +78,7 @@ namespace MovieTheater.Controllers
             else
             {
                 MovieDataAccess access = new MovieDataAccess();
-                (Movies movie, List<MovieImages> movieImages) = access.FindMovie(id);
+                MovieView movie = access.FindMovie(id);
                 return View("Movie/MovieDetails", movie);
             }
         }
@@ -87,7 +87,7 @@ namespace MovieTheater.Controllers
         public ActionResult DeleteMovie(int id)
         {
             MovieDataAccess access = new MovieDataAccess();
-            (Movies movie, List<MovieImages> movieImages) = access.FindMovie(id);
+            MovieView movie = access.FindMovie(id);
             return View("Movie/DeleteMovie");
 
         }
@@ -116,18 +116,16 @@ namespace MovieTheater.Controllers
         public ActionResult AddMovie(MovieView TempMovie)
         {
             MovieDataAccess access = new MovieDataAccess();
-            HttpPostedFileBase file = Request.Files["images"];
-
-            access.AddMovie(TempMovie.movie);
 
             // Retrieve the generated MovieID
             int newMovieID = access.AddMovie(TempMovie.movie);
 
-            if (file != null && file.ContentLength > 0)
+            for (int i = 0; i < Request.Files.Count; i++)
             {
-                foreach (string fileName in Request.Files)
-                {
+                HttpPostedFileBase file = Request.Files[i];
 
+                if (file != null && file.ContentLength > 0)
+                {
                     // Validate file type
                     string[] allowedFileTypes = { ".jpg", ".jpeg", ".png", ".gif" };
                     string fileExtension = Path.GetExtension(file.FileName).ToLower();
@@ -170,7 +168,7 @@ namespace MovieTheater.Controllers
                         return View("Movie/AddMovie", TempMovie);
                     }
 
-                    
+
 
                     // Process and save the image...
                     byte[] imageData;
@@ -182,10 +180,9 @@ namespace MovieTheater.Controllers
                     access.UploadMovieImages(newMovieID, imageData);
 
                 }
-
-                
-
             }
+
+            
 
             return RedirectToAction("ListMovies");
         }
