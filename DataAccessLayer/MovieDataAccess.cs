@@ -114,9 +114,9 @@ namespace MovieTheater
         }
 
 
-        public (Movies movie, List<MovieImages> movieImages) FindMovie(int id)
+        public MovieView FindMovie(int id)
         {
-            Movies movie = null;
+            MovieView movie = null;
             List<MovieImages> movieImages = new List<MovieImages>();
             query = "select * from movies where MovieID = @id;";
             conn = new SqlConnection(connectionString);
@@ -131,17 +131,17 @@ namespace MovieTheater
                 {
                     reader.Read();
                     
-                    movie = new Movies();
-                    movie.MovieID = (int)reader["MovieID"];
-                    movie.Name = reader["Name"].ToString();
-                    movie.Date = (DateTime)reader["Date"];
-                    movie.AgeRating = reader["AgeRating"].ToString();
-                    movie.RunTime = (int)reader["RunTime"];
-                    movie.Category = reader["Category"].ToString();
-                    movie.Description = reader["Description"].ToString();
-                    movie.Language = reader["Language"].ToString();
-                    movie.DirectorID = (int)reader["DirectorID"];
-                   
+                    movie = new MovieView();
+                    movie.movie = new Movies();
+                    movie.movie.MovieID = (int)reader["MovieID"];
+                    movie.movie.Name = reader["Name"].ToString();
+                    movie.movie.Date = (DateTime)reader["Date"];
+                    movie.movie.AgeRating = reader["AgeRating"].ToString();
+                    movie.movie.RunTime = (int)reader["RunTime"];
+                    movie.movie.Category = reader["Category"].ToString();
+                    movie.movie.Description = reader["Description"].ToString();
+                    movie.movie.Language = reader["Language"].ToString();
+                    movie.movie.DirectorID = (int)reader["DirectorID"];
                    
                 }
                 reader.Close();
@@ -159,9 +159,10 @@ namespace MovieTheater
                         MovieImages movieImage = new MovieImages();
                         movieImage.ImageID = (int)reader["ImageID"];
                         movieImage.MovieID = (int)reader["MovieID"];
-                        movieImage.MovieIMG = (byte[])reader["MovieIMG"];
+                        movieImage.MovieIMG = (byte[])reader["Image"];
                         movieImages.Add(movieImage);
                     }
+                    movie.images = movieImages;
                 }
                 else
                 {
@@ -180,15 +181,15 @@ namespace MovieTheater
                 conn.Close();
             }
 
-            return (movie, movieImages);
-        } // ends EditMovie
+            return movie;
+        } // ends FindMovie
 
 
         public bool EditMovie(Movies movie)
         {
             query = "Update Movies " +
             "Set Name = @name, Date = @date, AgeRating = @agerating, Runtime = @runtime , Category = @category, Description = @description" +
-            ",Language = @language , DirectorID = @directorid , MovieIMG = @movieimg where MovieID = @id  ;";
+            ",Language = @language , DirectorID = @directorid where MovieID = @id  ;";
             
             int rows = 0;
             
@@ -228,7 +229,7 @@ namespace MovieTheater
         public bool DeleteMovie(int id)
         {
             int rows = 0;
-            query = "Delete from Movies where MovieID = @id;";
+            query = "Delete from MovieImages where MovieID = @id;Delete from Movies where MovieID = @id;";
 
             conn = new SqlConnection(connectionString);
             cmd = new SqlCommand(query, conn);
@@ -252,6 +253,7 @@ namespace MovieTheater
                 throw new Exception(ex.Message);
 
             }
+
             finally
             {
                 conn.Close();
