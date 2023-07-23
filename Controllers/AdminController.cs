@@ -20,6 +20,8 @@ namespace MovieTheater.Controllers
             return View();
         }
 
+        /*private ImageUtility _imageService = new ImageUtility();*/
+
         [HttpGet]
         public ActionResult ListMovies()
         {
@@ -38,9 +40,10 @@ namespace MovieTheater.Controllers
             }
             else
             {
+                MovieView TempMovie = new MovieView();
                 MovieDataAccess access = new MovieDataAccess();
-                MovieView movie = access.FindMovie(id);
-                return View("Movie/EditMovie",movie);
+                TempMovie = access.FindMovie(id);
+                return View("Movie/EditMovie", TempMovie);
             }
             
         }
@@ -49,21 +52,18 @@ namespace MovieTheater.Controllers
         public ActionResult EditMovie(MovieView TempMovie)
         {
 
-           /* if (TempMovie.ImageFile != null && TempMovie.ImageFile.ContentLength > 0)
+            
+            MovieDataAccess access = new MovieDataAccess();
+            try
             {
-                byte[] imageData;
-                using (var binaryReader = new BinaryReader(TempMovie.ImageFile.InputStream))
-                {
-                    imageData = binaryReader.ReadBytes(TempMovie.ImageFile.ContentLength);
-                }
-                TempMovie.MovieIMG = imageData;
+                ImageUtility.ProcessAndSaveImage(Request.Files, TempMovie.movie.MovieID, ModelState, access);
             }
-            else
+            catch (Exception ex)
             {
-                TempMovie.MovieIMG = null;
-            }*/
-            MovieDataAccess movieData = new MovieDataAccess();
-            movieData.EditMovie(TempMovie.movie);
+                ModelState.AddModelError("ImageFile", ex.Message);
+                return View("Movie/EditMovie", TempMovie);
+            }
+            access.EditMovie(TempMovie.movie);
             return RedirectToAction("ListMovies");
         }
 
@@ -120,69 +120,15 @@ namespace MovieTheater.Controllers
             // Retrieve the generated MovieID
             int newMovieID = access.AddMovie(TempMovie.movie);
 
-            for (int i = 0; i < Request.Files.Count; i++)
+            try
             {
-                HttpPostedFileBase file = Request.Files[i];
-
-                if (file != null && file.ContentLength > 0)
-                {
-                    // Validate file type
-                    string[] allowedFileTypes = { ".jpg", ".jpeg", ".png", ".gif" };
-                    string fileExtension = Path.GetExtension(file.FileName).ToLower();
-
-                    if (!allowedFileTypes.Contains(fileExtension))
-                    {
-                        ModelState.AddModelError("ImageFile", "Only JPG, JPEG, PNG, and GIF files are allowed.");
-                        return View("Movie/AddMovie", TempMovie);
-                    }
-
-                    // Convert the content length to gigabytes
-                    double contentLengthGB = file.ContentLength / (1024.0 * 1024.0 * 1024.0);
-
-                    // Check if the file exceeds the maximum size (2 GB)
-                    if (contentLengthGB > 2)
-                    {
-                        ModelState.AddModelError("ImageFile", "The uploaded file size cannot exceed 2 GB.");
-                        return View("Movie/AddMovie", TempMovie);
-                    }
-
-                    try
-                    {
-                        // Validate image dimensions
-                        using (Image img = Image.FromStream(file.InputStream))
-                        {
-                            int maxWidth = 1920;  // Maximum width allowed
-                            int maxHeight = 1080; // Maximum height allowed
-
-                            if (img.Width > maxWidth || img.Height > maxHeight)
-                            {
-                                ModelState.AddModelError("ImageFile", "The uploaded image dimensions exceed the maximum allowed size.");
-                                return View("Movie/AddMovie", TempMovie);
-                            }
-                        }
-                    }
-                    catch (ArgumentException ex)
-                    {
-                        ModelState.AddModelError("ImageFile", "Error processing the uploaded image: " + ex.Message);
-                        ModelState.AddModelError("ImageFile", "Stack Trace: " + ex.StackTrace);
-                        return View("Movie/AddMovie", TempMovie);
-                    }
-
-
-
-                    // Process and save the image...
-                    byte[] imageData;
-                    using (var binaryReader = new BinaryReader(file.InputStream))
-                    {
-                        imageData = binaryReader.ReadBytes(file.ContentLength);
-                    }
-
-                    access.UploadMovieImages(newMovieID, imageData);
-
-                }
+                ImageUtility.ProcessAndSaveImage(Request.Files, newMovieID, ModelState, access);
             }
-
-            
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("ImageFile", ex.Message);
+                return View("Movie/AddMovie", TempMovie);
+            }
 
             return RedirectToAction("ListMovies");
         }
@@ -190,22 +136,22 @@ namespace MovieTheater.Controllers
 
 
 
-            public ActionResult GetMovieIMG(int id)
+        public ActionResult GetMovieIMG(int id)
         {
-            MovieDataAccess access = new MovieDataAccess();
-            byte[] imageData;
-            imageData = access.GetMovieImage(id);
-            if (imageData != null)
-            {
-                string imageType = ImageUtility.GetImageType(imageData);
-                var result = new FileContentResult(imageData, imageType);
+        MovieDataAccess access = new MovieDataAccess();
+        byte[] imageData;
+        imageData = access.GetMovieImage(id);
+        if (imageData != null)
+        {
+            string imageType = ImageUtility.GetImageType(imageData);
+            var result = new FileContentResult(imageData, imageType);
 
-                return result;
-            }
-            else
-            {
-                return null;
-            }
+            return result;
+        }
+        else
+        {
+            return null;
+        }
 
         }
 

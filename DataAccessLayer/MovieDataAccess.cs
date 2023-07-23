@@ -189,7 +189,7 @@ namespace MovieTheater
         {
             query = "Update Movies " +
             "Set Name = @name, Date = @date, AgeRating = @agerating, Runtime = @runtime , Category = @category, Description = @description" +
-            ",Language = @language , DirectorID = @directorid , MovieIMG = @movieimg where MovieID = @id  ;";
+            ",Language = @language , DirectorID = @directorid where MovieID = @id  ;";
             
             int rows = 0;
             
