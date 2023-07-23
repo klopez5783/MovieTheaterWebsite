@@ -4,7 +4,9 @@
     ViewBag.Title = "MovieDetails";
 }
 
-<h2>MovieDetails</h2>
+<div class="p-5 text-center bg-image rounded-3" style="">
+
+</div>
 
 <div>
     <h4>Movies</h4>
@@ -97,7 +99,7 @@
         </div>
 
         <div style="margin-left:200px;">
-            @if (Model.MovieIMG != null)
+            @*@if (Model.MovieIMG != null)
             {
                 <img src="@Url.Action("GetMovieIMG", "Admin", new { id = Model.MovieID })" alt="Movie Image" />
 
@@ -105,7 +107,7 @@
             else
             {
                 <h2>Image Is Not Avaliable </h2>
-            }
+            }*@
         </div>
 
     </div>

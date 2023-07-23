@@ -88,17 +88,14 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ImageFile, "Select Image")
-                    <input type="file" name="ImageFile" id="ImageFile" />
-                </div>
+                
 
 
 
             </div>
 
             <div style="margin-left:200px;">
-                @if (Model.MovieIMG != null)
+               @* @if (Model.MovieIMG != null)
                 {
                     <img src="@Url.Action("GetMovieIMG", "Admin", new { id = Model.MovieID })" alt="Movie Image" />
 
@@ -106,7 +103,7 @@
                 else
                 {
                     <h2>Image Is Not Avaliable </h2>
-                }
+                }*@
             </div>
 
         </div>

@@ -4,67 +4,89 @@
     ViewBag.Title = "EditActor";
 }
 
-<h2>EditActor</h2>
 
 
 @using (Html.BeginForm("EditActor", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Actors</h4>
-        <hr />
+<div class="form-horizontal">
+
+    <hr />
 
 
-        <div style="display:flex;">
+    <div class="card">
+        <div class="card-header" style="margin-bottom:10px;">
+            <h4>Edit Actor</h4>
+        </div>
+        <div class="d-flex justify-content-around" style="margin-bottom:20px;">
 
             <div>
+                <div class="row g-2" style="margin-bottom:10px;">
+                    <div class="col">
+                        <div class="form-floating">
+
+                            @Html.EditorFor(model => model.ActorID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => model.ActorID, htmlAttributes: new { @class = "" })
+
+                            @Html.ValidationMessageFor(model => model.ActorID, "", new { @class = "text-danger" })
 
 
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-floating">
+                            @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "" })
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ActorID, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.ActorID, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ActorID, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row g-2">
+
+
+                    <div class="col-md">
+                        <div class="form-floating">
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+
+                            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "" })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <div class="form-floating">
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "" })
+
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-                    </div>
+                <div class="input-group mb-3" style="margin-top:20px;">
+                    <input type="file" class="form-control" name="ImageFile" id="ImageFile">
+                    @Html.LabelFor(model => model.ImageFile, "")
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ImageFile, "Select Image")
-                    <input type="file" name="ImageFile" id="ImageFile" />
+                <div style="width:450px;margin-top:35px;" class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    @Html.ActionLink("Back to List", "ListActors", null, new { @class = "btn btn-outline-secondary" })
+                    <input type="submit" value="Save" class="btn btn-outline-success" />
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete_@Model.ActorID">
+                        Delete
+                    </button>                
                 </div>
 
             </div>
 
 
-            <div style="margin-left:200px;">
+            <div>
                 @if (Model.ActorIMG != null)
                 {
                     <img src="@Url.Action("GetActorIMG", "Admin", new { id = Model.ActorID })" alt="Movie Image" />
@@ -79,17 +101,62 @@
 
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-success" />
+        
+        
+
+    </div>
+
+    
+
+</div>
+
+
+        
+
+        
+}
+
+<div class="modal fade" id="confirmDelete_@Model.ActorID" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin: auto;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="#ff0000" class="bi bi-x-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" fill="#dc3545" />
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" fill="#dc3545" />
+                    </svg>
+                    <h4 style="margin:25px auto 15px auto;">
+                        Are You Sure?
+                    </h4>
+                </div>
+
+                <p style="width: 300px; text-align: center; margin: auto; color: #888888; ">Do you really want to delete this record? This process cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <div style="display: flex; margin: 0px auto 0px auto;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right:10px;">Cancel</button>
+                    @using (Html.BeginForm("DeleteActor", "Admin", new { id = Model.ActorID }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.Hidden("id", Model.ActorID)
+
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    }
+
+                </div>
+
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "ListActors")
 </div>
+
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -1,4 +1,5 @@
-﻿using MovieTheater.Utilities;
+﻿using Antlr.Runtime.Misc;
+using MovieTheater.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,6 +9,7 @@ using System.Net.Mime;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
+using System.Drawing;
 
 namespace MovieTheater.Controllers
 {
@@ -28,19 +30,26 @@ namespace MovieTheater.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditMovie(int id)
+        public ActionResult EditMovie(int id = 0 )
         {
-            Movies TempMovie;
-            MovieDataAccess movieData = new MovieDataAccess();
-            TempMovie = movieData.FindMovie(id);
-            return View("Movie/EditMovie", TempMovie);
+            if (id == 0)
+            {
+                return RedirectToAction("ListMovies");
+            }
+            else
+            {
+                MovieDataAccess access = new MovieDataAccess();
+                (Movies movie, List<MovieImages> movieImages) = access.FindMovie(id);
+                return View("Movie/EditMovie",movie);
+            }
+            
         }
 
         [HttpPost]
         public ActionResult EditMovie(Movies TempMovie)
         {
 
-            if (TempMovie.ImageFile != null && TempMovie.ImageFile.ContentLength > 0)
+           /* if (TempMovie.ImageFile != null && TempMovie.ImageFile.ContentLength > 0)
             {
                 byte[] imageData;
                 using (var binaryReader = new BinaryReader(TempMovie.ImageFile.InputStream))
@@ -52,7 +61,7 @@ namespace MovieTheater.Controllers
             else
             {
                 TempMovie.MovieIMG = null;
-            }
+            }*/
             MovieDataAccess movieData = new MovieDataAccess();
             movieData.EditMovie(TempMovie);
             return RedirectToAction("ListMovies");
@@ -60,21 +69,26 @@ namespace MovieTheater.Controllers
 
 
         [HttpGet]
-        public ActionResult MovieDetails(int id)
+        public ActionResult MovieDetails(int id = 0)
         {
-            Movies tempMovie;
-            MovieDataAccess access = new MovieDataAccess();
-            tempMovie = access.FindMovie(id);
-            return View("Movie/MovieDetails", tempMovie);
+            if (id == 0)
+            {
+                return RedirectToAction("ListMovies");
+            }
+            else
+            {
+                MovieDataAccess access = new MovieDataAccess();
+                (Movies movie, List<MovieImages> movieImages) = access.FindMovie(id);
+                return View("Movie/MovieDetails", movie);
+            }
         }
 
-        [HttpGet]
+            [HttpGet]
         public ActionResult DeleteMovie(int id)
         {
-            Movies TempMovie;
-            MovieDataAccess movieData = new MovieDataAccess();
-            TempMovie = movieData.FindMovie(id);
-            return View("Movie/DeleteMovie", TempMovie);
+            MovieDataAccess access = new MovieDataAccess();
+            (Movies movie, List<MovieImages> movieImages) = access.FindMovie(id);
+            return View("Movie/DeleteMovie");
 
         }
 
@@ -92,35 +106,94 @@ namespace MovieTheater.Controllers
         [HttpGet]
         public ActionResult AddMovie()
         {
-            return View("Movie/AddMovie");
+            MovieView viewModel = new MovieView();
+            return View("Movie/AddMovie", viewModel);
+
         }
 
 
         [HttpPost]
-        public ActionResult AddMovie(Movies TempMovie)
+        public ActionResult AddMovie(MovieView TempMovie)
         {
-            if (ModelState.IsValid)
+            MovieDataAccess access = new MovieDataAccess();
+            HttpPostedFileBase file = Request.Files["images"];
+
+            access.AddMovie(TempMovie.movie);
+
+            // Retrieve the generated MovieID
+            int newMovieID = access.AddMovie(TempMovie.movie);
+
+            if (file != null && file.ContentLength > 0)
             {
-                if (TempMovie.ImageFile != null && TempMovie.ImageFile.ContentLength > 0)
+                foreach (string fileName in Request.Files)
                 {
-                    byte[] imageData;
-                    using (var binaryReader = new BinaryReader(TempMovie.ImageFile.InputStream))
+
+                    // Validate file type
+                    string[] allowedFileTypes = { ".jpg", ".jpeg", ".png", ".gif" };
+                    string fileExtension = Path.GetExtension(file.FileName).ToLower();
+
+                    if (!allowedFileTypes.Contains(fileExtension))
                     {
-                        imageData = binaryReader.ReadBytes(TempMovie.ImageFile.ContentLength);
+                        ModelState.AddModelError("ImageFile", "Only JPG, JPEG, PNG, and GIF files are allowed.");
+                        return View("Movie/AddMovie", TempMovie);
                     }
-                    TempMovie.MovieIMG = imageData;
+
+                    // Convert the content length to gigabytes
+                    double contentLengthGB = file.ContentLength / (1024.0 * 1024.0 * 1024.0);
+
+                    // Check if the file exceeds the maximum size (2 GB)
+                    if (contentLengthGB > 2)
+                    {
+                        ModelState.AddModelError("ImageFile", "The uploaded file size cannot exceed 2 GB.");
+                        return View("Movie/AddMovie", TempMovie);
+                    }
+
+                    try
+                    {
+                        // Validate image dimensions
+                        using (Image img = Image.FromStream(file.InputStream))
+                        {
+                            int maxWidth = 1920;  // Maximum width allowed
+                            int maxHeight = 1080; // Maximum height allowed
+
+                            if (img.Width > maxWidth || img.Height > maxHeight)
+                            {
+                                ModelState.AddModelError("ImageFile", "The uploaded image dimensions exceed the maximum allowed size.");
+                                return View("Movie/AddMovie", TempMovie);
+                            }
+                        }
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        ModelState.AddModelError("ImageFile", "Error processing the uploaded image: " + ex.Message);
+                        ModelState.AddModelError("ImageFile", "Stack Trace: " + ex.StackTrace);
+                        return View("Movie/AddMovie", TempMovie);
+                    }
+
+                    
+
+                    // Process and save the image...
+                    byte[] imageData;
+                    using (var binaryReader = new BinaryReader(file.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(file.ContentLength);
+                    }
+
+                    access.UploadMovieImages(newMovieID, imageData);
+
                 }
 
-                MovieDataAccess dataAccess = new MovieDataAccess();
-                dataAccess.AddMovie(TempMovie);
-                return RedirectToAction("ListMovies");
+                
+
             }
-            return View();
+
+            return RedirectToAction("ListMovies");
         }
 
 
 
-        public ActionResult GetMovieIMG(int id)
+
+            public ActionResult GetMovieIMG(int id)
         {
             MovieDataAccess access = new MovieDataAccess();
             byte[] imageData;
@@ -179,12 +252,20 @@ namespace MovieTheater.Controllers
 
 
         [HttpGet]
-        public ActionResult EditActor(int id)
+        public ActionResult EditActor(int id = 0)
         {
-            ActorsDataAccess access =  new ActorsDataAccess();
-            Actors actor;
-            actor = access.FindActor(id);
-            return View("Actors/EditActor",actor);
+            if (id == 0)
+            {
+                return RedirectToAction("ListActors");
+            }
+            else
+            {
+                ActorsDataAccess access =  new ActorsDataAccess();
+                Actors actor;
+                actor = access.FindActor(id);
+                return View("Actors/EditActor",actor);
+            }
+            
         }
 
 
@@ -210,21 +291,37 @@ namespace MovieTheater.Controllers
         }
 
         [HttpGet]
-        public ActionResult ActorDetails(int id)
+        public ActionResult ActorDetails(int id = 0)
         {
-            ActorsDataAccess access = new ActorsDataAccess();
-            Actors actor;
-            actor = access.FindActor(id);
-            return View("Actors/ActorDetails", actor);
+            if (id == 0)
+            {
+                return RedirectToAction("ListActors");
+            }
+            else
+            {
+                ActorsDataAccess access = new ActorsDataAccess();
+                Actors actor;
+                actor = access.FindActor(id);
+                return View("Actors/ActorDetails", actor);
+            }
+            
         }
 
         [HttpGet]
-        public ActionResult DeleteActor(int id)
+        public ActionResult DeleteActor(int id = 0)
         {
-            ActorsDataAccess access = new ActorsDataAccess();
-            Actors actor;
-            actor = access.FindActor(id);
-            return View("Actors/DeleteActor", actor);
+            if (id == 0)
+            {
+                return RedirectToAction("ListActors");
+            }
+            else
+            {
+                ActorsDataAccess access = new ActorsDataAccess();
+                Actors actor;
+                actor = access.FindActor(id);
+                return View("Actors/DeleteActor", actor);
+            }
+            
         }
 
         [HttpPost, ActionName("DeleteActor")]
@@ -358,6 +455,15 @@ namespace MovieTheater.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (director.ImageFile != null && director.ImageFile.ContentLength > 0)
+                {
+                    byte[] imageData;
+                    using (var binaryReader = new BinaryReader(director.ImageFile.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(director.ImageFile.ContentLength);
+                    }
+                    director.DirectorIMG = imageData;
+                }
                 DirectorDataAccess access = new DirectorDataAccess();
                 access.AddDirector(director);
                 return RedirectToAction("ListDirectors");
@@ -366,11 +472,18 @@ namespace MovieTheater.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditDirector(int id)
+        public ActionResult EditDirector(int id = 0)
         {
-            DirectorDataAccess data = new DirectorDataAccess();
-            Director director = data.FindDirector(id);
-            return View("Directors/EditDirector", director);
+            if (id == 0)
+            {
+                return RedirectToAction("ListDirectors");
+            }
+            else
+            {
+                DirectorDataAccess data = new DirectorDataAccess();
+                Director director = data.FindDirector(id);
+                return View("Directors/EditDirector", director);
+            }
         }
 
 
@@ -379,6 +492,19 @@ namespace MovieTheater.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (director.ImageFile != null && director.ImageFile.ContentLength > 0)
+                {
+                    byte[] imageData;
+                    using (var binaryReader = new BinaryReader(director.ImageFile.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(director.ImageFile.ContentLength);
+                    }
+                    director.DirectorIMG = imageData;
+                }
+                else
+                {
+                    director.DirectorIMG = null;
+                }
                 DirectorDataAccess access=new DirectorDataAccess();
                 access.EditDirector(director);
                 return RedirectToAction("ListDirectors");
@@ -387,7 +513,7 @@ namespace MovieTheater.Controllers
         }
 
         [HttpGet]
-        public ActionResult DeleteDirector(int id)
+        public ActionResult DeleteDirector(int id = 0)
         {
             DirectorDataAccess data = new DirectorDataAccess();
             Director director = data.FindDirector(id);
@@ -403,11 +529,38 @@ namespace MovieTheater.Controllers
         }
 
         [HttpGet]
-        public ActionResult DirectorDetails(int id)
+        public ActionResult DirectorDetails(int id = 0)
         {
+            if (id == 0)
+            {
+                return RedirectToAction("ListDirectors");
+            }
+            else
+            {
             DirectorDataAccess data = new DirectorDataAccess();
             Director director = data.FindDirector(id);
             return View("Directors/DirectorDetails", director);
+            }
+            
+        }
+
+        public ActionResult GetDirectorIMG(int id)
+        {
+            DirectorDataAccess access = new DirectorDataAccess();
+            byte[] imageData;
+            imageData = access.GetDirectorImage(id);
+            if (imageData != null)
+            {
+                string imageType = ImageUtility.GetImageType(imageData);
+                var result = new FileContentResult(imageData, imageType);
+
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
     }

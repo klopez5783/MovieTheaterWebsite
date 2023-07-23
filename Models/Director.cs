@@ -12,5 +12,10 @@ namespace MovieTheater
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public byte[] DirectorIMG { get; set; }
+
+        public HttpPostedFileBase ImageFile { get; set; }
+
     }
 }

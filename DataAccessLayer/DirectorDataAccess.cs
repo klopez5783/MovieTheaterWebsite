@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
+using Antlr.Runtime.Misc;
 
 namespace MovieTheater
 {
@@ -22,8 +23,12 @@ namespace MovieTheater
             cmd.Parameters.Add("@directorid", SqlDbType.Int).Value = director.DirectorID;
             cmd.Parameters.Add("@firstname", SqlDbType.NVarChar, 50).Value = director.FirstName;
             cmd.Parameters.Add("@lastname", SqlDbType.NVarChar, 50).Value = director.LastName;
+            if (director.DirectorIMG != null)
+            {
+                cmd.Parameters.Add("@directorimg", SqlDbType.Image).Value = director.DirectorIMG;
+            }
 
-            return director;
+                return director;
 
         }
 
@@ -89,6 +94,10 @@ namespace MovieTheater
                     director.DirectorID = (int)reader["DirectorID"];
                     director.FirstName = reader["FirstName"].ToString();
                     director.LastName = reader["LastName"].ToString();
+                    if (reader["DirectorIMG"] != DBNull.Value)
+                    {
+                        director.DirectorIMG = (byte[])reader["DirectorIMG"];
+                    }
 
                 }
             }
@@ -106,8 +115,18 @@ namespace MovieTheater
 
         public bool EditDirector(Director director)
         {
-            query = "Update Directors" +
+            if (director.DirectorIMG == null)
+            {
+                query = "Update Directors" +
                 " set FirstName = @firstname , LastName = @lastname where DirectorID = @directorid";
+            }
+
+            else
+            {
+                query = "Update Directors" +
+                " set FirstName = @firstname , LastName = @lastname, DirectorIMG = @directorimg where DirectorID = @directorid";
+            }
+            
             int rows = 0;
 
             conn = new SqlConnection(connectionString);
@@ -215,6 +234,41 @@ namespace MovieTheater
 
         } // ends Add Director
 
+        public byte[] GetDirectorImage(int id)
+        {
+            query = "Select DirectorIMG from Directors where DirectorID = @id;";
+            conn = new SqlConnection(connectionString);
+            cmd = new SqlCommand(query, conn);
+            cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            byte[] img;
+            try
+            {
+                conn.Open();
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    img = (byte[])reader["DirectorIMG"];
+
+                }
+                else
+                {
+                    img = null;
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+            finally
+            {
+                conn.Close();
+
+            }
+
+            return img;
+        }// ends get img
 
 
 
