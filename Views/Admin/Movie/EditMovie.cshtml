@@ -113,7 +113,33 @@
 
 
                 <div>
-                    test
+
+                    @*
+        Model.images != null: This is checking if images is null. This would be false if images is null, and true otherwise.
+
+        Model.images.Any(): This is checking if images contains any elements. This would be false if images is empty, and true otherwise.
+                    *@
+
+                    @if (Model.images != null && Model.images.Any())
+                    {
+
+                        System.Diagnostics.Debug.WriteLine($"Image data: {BitConverter.ToString(Model.images[0].MovieIMG)}");
+                        System.Diagnostics.Debug.WriteLine($"MIME type: {Model.images[0].MimeType}");
+
+                            <!-- Display Images-->
+                        var base64 = Convert.ToBase64String(Model.images[0].MovieIMG);
+                        var imgSrc = String.Format("data:{0};base64,{1}", Model.images[0].MimeType, base64);
+                            <img src="@imgSrc" alt="Image" />
+                        
+                    }
+                    else
+                    {
+                        <h3>No Image to display.</h3>
+                    }
+
+                  
+
+
                 </div>
             </div>
 

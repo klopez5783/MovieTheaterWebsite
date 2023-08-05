@@ -68,12 +68,24 @@ namespace MovieTheater.Utilities
 
                     // Process and save the image...
                     byte[] imageData;
+                    file.InputStream.Position = 0;
                     using (var binaryReader = new BinaryReader(file.InputStream))
                     {
                         imageData = binaryReader.ReadBytes(file.ContentLength);
                     }
 
-                    access.UploadMovieImages(newMovieID, imageData);
+                    System.Diagnostics.Debug.WriteLine($"Image data: {BitConverter.ToString(imageData)}");
+                    System.Diagnostics.Debug.WriteLine($"Content length: {file.ContentLength}");
+                    System.Diagnostics.Debug.WriteLine($"Input stream length: {file.InputStream.Length}");
+
+
+
+
+                    string mimeType = file.ContentType;
+
+                    access.UploadMovieImages(newMovieID, imageData,mimeType);
+
+
                 }
             }
         }

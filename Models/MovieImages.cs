@@ -14,6 +14,8 @@ namespace MovieTheater
 
         public byte[] MovieIMG { get; set; }
 
+        public string MimeType { get; set; }  // new property for the MIME type
+
         public HttpPostedFileBase ImageFile { get; set; }
 
     }
