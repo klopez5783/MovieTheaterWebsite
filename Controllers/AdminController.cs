@@ -43,6 +43,8 @@ namespace MovieTheater.Controllers
                 MovieView TempMovie = new MovieView();
                 MovieDataAccess access = new MovieDataAccess();
                 TempMovie = access.FindMovie(id);
+                
+
                 return View("Movie/EditMovie", TempMovie);
             }
             

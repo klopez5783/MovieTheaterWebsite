@@ -82,13 +82,14 @@ namespace MovieTheater
 
         } // ends getAllMovies
 
-        public void UploadMovieImages(int movieID, byte[] imageData)
+        public void UploadMovieImages(int movieID, byte[] imageData,string mimeType)
         {
-            query = "INSERT INTO MovieImages (MovieID, Image) VALUES (@movieID, @imageData);";
+            query = "INSERT INTO MovieImages (MovieID, Image,MimeType) VALUES (@movieID, @imageData,@type);";
             conn = new SqlConnection(connectionString);
             cmd = new SqlCommand(query, conn);
             cmd.Parameters.Add("@movieID", SqlDbType.Int).Value = movieID;
             cmd.Parameters.Add("@imageData", SqlDbType.Image).Value = imageData;
+            cmd.Parameters.Add("@type", SqlDbType.VarChar).Value = mimeType;
 
             try
             {
@@ -160,6 +161,7 @@ namespace MovieTheater
                         movieImage.ImageID = (int)reader["ImageID"];
                         movieImage.MovieID = (int)reader["MovieID"];
                         movieImage.MovieIMG = (byte[])reader["Image"];
+                        movieImage.MimeType = (string)reader["MimeType"];
                         movieImages.Add(movieImage);
                     }
                     movie.images = movieImages;
@@ -180,6 +182,8 @@ namespace MovieTheater
                 reader.Close();
                 conn.Close();
             }
+
+
 
             return movie;
         } // ends FindMovie
