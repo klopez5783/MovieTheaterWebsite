@@ -74,10 +74,6 @@ namespace MovieTheater.Utilities
                         imageData = binaryReader.ReadBytes(file.ContentLength);
                     }
 
-                    System.Diagnostics.Debug.WriteLine($"Image data: {BitConverter.ToString(imageData)}");
-                    System.Diagnostics.Debug.WriteLine($"Content length: {file.ContentLength}");
-                    System.Diagnostics.Debug.WriteLine($"Input stream length: {file.InputStream.Length}");
-
 
 
 

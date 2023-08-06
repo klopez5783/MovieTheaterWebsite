@@ -200,6 +200,9 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\ActorsImage.png" />
     <Content Include="Images\Actors\AlanRitchson.jpg" />
+    <Content Include="Images\armchair.png" />
+    <Content Include="Images\clapperboard.png" />
+    <Content Include="Images\director-chair.png" />
     <Content Include="Images\Actors\JasonMamoa.jpg" />
     <Content Include="Images\Actors\MichelleRodriguez.jpg" />
     <Content Include="Images\Actors\VinDiesel.jpg" />
