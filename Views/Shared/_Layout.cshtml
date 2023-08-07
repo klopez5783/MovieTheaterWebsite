@@ -6,6 +6,84 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+<style>
+
+
+    .TicketThumbnail__img{
+        position: relative;
+    }
+
+    .TicketThumbnail__img img {
+        max-height: 500px;
+        width: 100%;
+        object-fit: cover; /* this will keep the aspect ratio while covering the space */
+        object-position: center 30%;
+    }
+
+    .TicketThumbnail__Text {
+        position: absolute;
+        bottom: 30px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+  
+
+    .full-width {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    .TicketsButton {
+        display: flex;
+        align-items: center;
+        background: #37d461;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        padding: 0px;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+        height: 35px;
+    }
+
+    .TicketsButton:hover {
+        background: #1df557;
+    }
+
+    .TicketsButton:active {
+        background: #0ec43f;
+    }
+
+
+    .TicketsButton__icon, .TicketsButton__text {
+        display: inline-flex;
+        align-items: center;
+        color: white;
+        padding: 0 15px;
+        height: 100%;
+    }
+
+    .TicketsButton__icon {
+        font-size: 1.5em;
+        background: rgba(0,0,0,0.08);
+    }
+
+
+    .TicketsButton__icon img {
+        width: 25px;
+        height: 25px;
+    }
+
+</style>
+
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
@@ -24,6 +102,11 @@
             </div>
         </div>
     </nav>
+
+    <div class="full-width">
+        @RenderSection("FullWidth", required: false)
+    </div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />

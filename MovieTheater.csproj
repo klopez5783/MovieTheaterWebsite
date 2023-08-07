@@ -210,12 +210,18 @@
     <Content Include="Images\AddDirector.png" />
     <Content Include="Images\CastCrew.png" />
     <Content Include="Images\DirectorsImage.png" />
+    <Content Include="Images\Director\LouisLeterier.jpg" />
     <Content Include="Images\FastX.jpg" />
+    <Content Include="Images\FastX\Fast-X-7.png" />
+    <Content Include="Images\FastX\FastX.jpg" />
+    <Content Include="Images\FastX\FastXJumboTron.jpg" />
+    <Content Include="Images\FastX\HD-wallpaper-fast-x-fast-x-fast-and-furious-2023-movies-movies.jpg" />
     <Content Include="Images\Jumper.jpg" />
     <Content Include="Images\MovieIcon.jpg" />
     <Content Include="Images\MovieIcon.png" />
     <Content Include="Images\NeverBackDown.jpg" />
     <Content Include="Images\Plussign.png" />
+    <Content Include="Images\ticket.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -279,21 +285,6 @@
     </Content>
     <Content Include="Views\Admin\Actors\DeleteActor.cshtml">
       <BrowseToURL>~/Admin/DeleteActor</BrowseToURL>
-    </Content>
-    <Content Include="Views\Admin\MovieCast\ListMovieCast.cshtml">
-      <BrowseToURL>~/Admin/ListMovieCast</BrowseToURL>
-    </Content>
-    <Content Include="Views\Admin\MovieCast\AddMovieCast.cshtml">
-      <BrowseToURL>~/Admin/AddMovieCast</BrowseToURL>
-    </Content>
-    <Content Include="Views\Admin\MovieCast\EditMovieCast.cshtml">
-      <BrowseToURL>~/Admin/EditMovieCast</BrowseToURL>
-    </Content>
-    <Content Include="Views\Admin\MovieCast\DeleteMovieCast.cshtml">
-      <BrowseToURL>~/Admin/DeleteMovieCast</BrowseToURL>
-    </Content>
-    <Content Include="Views\Admin\MovieCast\MovieCastDetails.cshtml">
-      <BrowseToURL>~/Admin/MovieCastDetails</BrowseToURL>
     </Content>
     <Content Include="Views\Admin\Directors\ListDirectors.cshtml">
       <BrowseToURL>~/Admin/ListDirectors</BrowseToURL>

@@ -1,118 +1,42 @@
-﻿@model MovieTheater.Movies
+﻿@model MovieTheater.MovieView
 
 @{
     ViewBag.Title = "MovieDetails";
 }
 
-<div class="p-5 text-center bg-image rounded-3" style="">
 
-</div>
+@section FullWidth {
+    <div class="TicketThumbnail__img">
+        <img src="~/Images/FastX/Fast-X-7.png" />
 
-<div>
-    <h4>Movies</h4>
-    <hr />
+        <div class="TicketThumbnail">
 
-    <div style="display:flex;">
-
-        <div>
-
-
-
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.MovieID)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.MovieID)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Name)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Date)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Date)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.AgeRating)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.AgeRating)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.RunTime)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.RunTime)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Category)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Category)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Description)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Language)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Language)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.DirectorID)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.DirectorID)
-                </dd>
-
-
-
-
-            </dl>
-
-        </div>
-
-        <div style="margin-left:200px;">
-            @*@if (Model.MovieIMG != null)
-            {
-                <img src="@Url.Action("GetMovieIMG", "Admin", new { id = Model.MovieID })" alt="Movie Image" />
-
-            }
-            else
-            {
-                <h2>Image Is Not Avaliable </h2>
-            }*@
+            <div class="TicketThumbnail__Text">
+                <div style="font-family: Impact, Charcoal, sans-serif;font-size:70px;color:white;">
+                    @Model.movie.Name
+                </div>
+                <button type="button" class="TicketsButton">
+                    <span class="TicketsButton__text" onclick="window.location.href='@Url.Action("BuyTickets", new { id = Model.movie.MovieID })'">
+                        Get Tickets
+                    </span>
+                    <span class="TicketsButton__icon">
+                        <img src="~/Images/ticket.png" />
+                    </span>
+                </button>
+            </div>
         </div>
 
     </div>
+}
+
+
+
+<div class="container">
+
 </div>
+
+
 <p>
-    @Html.ActionLink("Edit", "EditMovie", new { id = Model.MovieID }) |
+    @Html.ActionLink("Edit", "EditMovie", new { id = Model.movie.MovieID }) |
     @Html.ActionLink("Back to List", "ListMovies")
 </p>
