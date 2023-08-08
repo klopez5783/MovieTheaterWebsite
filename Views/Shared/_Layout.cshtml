@@ -7,82 +7,159 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-<style>
+    <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
 
 
-    .TicketThumbnail__img{
-        position: relative;
-    }
-
-    .TicketThumbnail__img img {
-        max-height: 500px;
-        width: 100%;
-        object-fit: cover; /* this will keep the aspect ratio while covering the space */
-        object-position: center 30%;
-    }
-
-    .TicketThumbnail__Text {
-        position: absolute;
-        bottom: 30px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-  
-
-    .full-width {
-        width: 100%;
-        max-width: 100%;
-    }
+    <style>
 
 
-    .TicketsButton {
-        display: flex;
-        align-items: center;
-        background: #37d461;
-        border: none;
-        outline: none;
-        border-radius: 10px;
-        overflow: hidden;
-        cursor: pointer;
-        padding: 0px;
-        font-family: 'Quicksand', sans-serif;
-        font-weight: 700;
-        height: 35px;
-    }
+        .TicketThumbnail__img {
+            position: relative;
+            margin-top: 40px;
+        }
 
-    .TicketsButton:hover {
-        background: #1df557;
-    }
+            .TicketThumbnail__img img {
+                max-height: 500px;
+                width: 100%;
+                object-fit: cover; /* this will keep the aspect ratio while covering the space */
+                object-position: center 30%;
+            }
 
-    .TicketsButton:active {
-        background: #0ec43f;
-    }
-
-
-    .TicketsButton__icon, .TicketsButton__text {
-        display: inline-flex;
-        align-items: center;
-        color: white;
-        padding: 0 15px;
-        height: 100%;
-    }
-
-    .TicketsButton__icon {
-        font-size: 1.5em;
-        background: rgba(0,0,0,0.08);
-    }
+        .TicketThumbnail__Text {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
 
-    .TicketsButton__icon img {
-        width: 25px;
-        height: 25px;
-    }
 
-</style>
+        .full-width {
+            width: 100%;
+            max-width: 100%;
+        }
+
+
+        .TicketsButton {
+            display: flex;
+            align-items: center;
+            background: #37d461;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            padding: 0px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            height: 35px;
+        }
+
+            .TicketsButton:hover {
+                background: #1df557;
+            }
+
+            .TicketsButton:active {
+                background: #0ec43f;
+            }
+
+
+        .TicketsButton__icon, .TicketsButton__text {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            padding: 0 15px;
+            height: 100%;
+        }
+
+        .TicketsButton__icon {
+            font-size: 1.5em;
+            background: rgba(0,0,0,0.08);
+        }
+
+
+            .TicketsButton__icon img {
+                width: 25px;
+                height: 25px;
+            }
+
+
+        #playButton {
+            width: 60px;
+            height: 60px;
+            background-color: transparent;
+            border: none;
+            position: relative;
+        }
+
+            #playButton img {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                top: 0;
+                left: 0;
+            }
+
+            #playButton .normal {
+                display: block;
+            }
+
+            #playButton .hover {
+                display: none;
+            }
+
+            #playButton:hover .normal {
+                display: none;
+            }
+
+            #playButton:hover .normal {
+                display: none;
+            }
+
+            #playButton:hover .hover {
+                display: block;
+            }
+
+        #closeButton {
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+            background-color: transparent;
+            border: none;
+            position: relative;
+        }
+
+            #closeButton img {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                top: 0;
+                right: 0;
+            }
+
+
+        #videoPlayerDiv {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        #my-video {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+        }
+
+         #movieInfo {
+            height: 25vh;
+        }
+
+    </style>
 
 </head>
 <body>
@@ -118,5 +195,9 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
+
+
 </body>
 </html>

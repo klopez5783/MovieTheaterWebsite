@@ -24,6 +24,21 @@ namespace MovieTheater
 
         public int RunTime { get; set; }
 
+        public string GetRunTime()
+        {
+            var hours = RunTime / 60;
+            var minutes = RunTime % 60;
+
+            if (minutes == 0)
+            {
+                return $"{hours}HR";
+            }
+
+            return $"{hours} HR {minutes} MIN";
+
+
+        }
+
         [Required(ErrorMessage = "A Movie Category is Required.")]
         public string Category { get; set; }
 
@@ -32,7 +47,7 @@ namespace MovieTheater
         public string Description { get; set; }
 
 
-        [Required(ErrorMessage = "The Language field is required.")]
+        [MaxLength(5000), Required(ErrorMessage = "The Language field is required.")]
         public string Language { get; set; }
 
 

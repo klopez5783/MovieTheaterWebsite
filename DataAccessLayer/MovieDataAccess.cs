@@ -23,7 +23,7 @@ namespace MovieTheater
             cmd.Parameters.Add("@agerating", SqlDbType.NVarChar, 50).Value = movie.AgeRating;
             cmd.Parameters.Add("@runtime", SqlDbType.Int).Value = movie.RunTime;
             cmd.Parameters.Add("@category", SqlDbType.NVarChar, 50).Value = movie.Category;
-            cmd.Parameters.Add("@description", SqlDbType.NVarChar, 50).Value = movie.Description;
+            cmd.Parameters.Add("@description", SqlDbType.NVarChar, 5000).Value = movie.Description;
             cmd.Parameters.Add("@language", SqlDbType.NVarChar, 50).Value = movie.Language;
             cmd.Parameters.Add("@directorid", SqlDbType.Int).Value = movie.DirectorID;
             
@@ -199,6 +199,7 @@ namespace MovieTheater
             
             conn = new SqlConnection(connectionString);
             cmd = new SqlCommand(query, conn);
+            movie.Description.Replace("'", "''");
             cmd.Parameters.Add("@id", SqlDbType.Int).Value = movie.MovieID;
 
             MovieVariablesSet(movie);

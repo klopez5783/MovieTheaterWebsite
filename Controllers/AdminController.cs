@@ -83,7 +83,7 @@ namespace MovieTheater.Controllers
             }
         }
 
-            [HttpGet]
+        [HttpGet]
         public ActionResult DeleteMovie(int id)
         {
             MovieDataAccess access = new MovieDataAccess();
